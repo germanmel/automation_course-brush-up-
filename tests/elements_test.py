@@ -1,6 +1,6 @@
 import time
 
-from pages.element_page import TextBoxPage
+from pages.elements_page import TextBoxPage,CheckBoxPage
 
 
 class TestTextBox:
@@ -21,3 +21,13 @@ class TestTextBox:
         """Можно записать короче, input_data = text_box_page.fill_all_fields() и 
         output_data = text_box_page.check_field_form() и потом сравнить 2 списка, но вариант выше более подробный
         в плане обозначения точного места ошибки"""
+
+class TestCheckBox:
+    def test_checkbox(selfs, driver):
+        check_box_page = CheckBoxPage(driver, 'https://demoqa.com/checkbox')
+        check_box_page.open()
+        check_box_page.open_full_list()
+        check_box_page.click_random_checkbox()
+        input_checkbox = check_box_page.get_checked_checkboxes()
+        output_checkbox = check_box_page.get_output_results()
+        assert input_checkbox == output_checkbox, f"Input: {input_checkbox} differs from output: {output_checkbox}"
