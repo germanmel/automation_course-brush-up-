@@ -18,6 +18,13 @@ class CheckBoxLocators:
     EXPAND_ALL_BUTTON = (By.CSS_SELECTOR, 'button[title="Expand all"]')
     ITEM_LIST = (By.CSS_SELECTOR, '.rct-title')
     CHECKED_ITEMS = (By.CSS_SELECTOR, '.rct-icon-check')
-    ITEM_TITLE = ".//ancestor::span[@class='rct-text']"
+    ITEM_TITLE = (By.XPATH, ".//ancestor::span[@class='rct-text']")
     OUTPUT_RESULTS = (By.CSS_SELECTOR, '.text-success')
 
+class RadioButtonLocators:
+    RADIO_BUTTONS = (By.CSS_SELECTOR, '.custom-radio input')
+    RADI0_TITLE = (By.CSS_SELECTOR, '.custom-control-label')
+    YES_RADIOBUTTON = (By.CSS_SELECTOR, '.custom-control-label[for="yesRadio"]')
+    IMPRESSIVE_RADIOBUTTON = (By.CSS_SELECTOR, '.custom-control-label[for="impressiveRadio"]')
+    NO_RADIOBUTTON = (By.CSS_SELECTOR, '.custom-control-label[for="noRadio"]')
+    OUTPUT_RESULT = (By.CSS_SELECTOR, '.text-success')

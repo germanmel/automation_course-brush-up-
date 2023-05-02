@@ -1,7 +1,7 @@
 import time
 
 from generator.generator import generated_person
-from locators.elements_page_locators import TextBoxPageLocators, CheckBoxLocators
+from locators.elements_page_locators import TextBoxPageLocators, CheckBoxLocators, RadioButtonLocators
 from pages.base_page import BasePage
 import random
 
@@ -62,8 +62,9 @@ class CheckBoxPage(BasePage):
         checked_list = self.elements_are_present(self.locators.CHECKED_ITEMS)
         data = []
         for box in checked_list:
-            """В каждом чекбоксе списка находим title с помощью xpath"""
-            item_title = box.find_element("xpath", self.locators.ITEM_TITLE)
+            """В каждом чекбоксе списка находим title, * перед локатором нужна для распаковки аргументов т.к. find
+            element принимает их как строку"""
+            item_title = box.find_element(*self.locators.ITEM_TITLE)
             """Добавляем текст заголовком в список"""
             data.append(item_title.text)
         """Возвращаем список как строку приведённую в общий вид с output строкой"""
@@ -76,4 +77,22 @@ class CheckBoxPage(BasePage):
         for item in result_list:
             data.append(item.text)
         return str(data).lower().replace(" ", "")
+
+class RadioButtonPage(BasePage):
+    locators = RadioButtonLocators()
+
+    def click_on_radio_button(self, choice):
+
+        choices = {
+            "yes": self.locators.YES_RADIOBUTTON,
+            "impressive": self.locators.IMPRESSIVE_RADIOBUTTON,
+            "no": self.locators.NO_RADIOBUTTON,
+        }
+        self.element_is_visible(choices[choice]).click()
+
+    def get_checked_radio_titles(self):
+        return self.element_is_present(self.locators.OUTPUT_RESULT).text
+
+
+
 
