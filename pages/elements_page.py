@@ -82,16 +82,20 @@ class RadioButtonPage(BasePage):
     locators = RadioButtonLocators()
 
     def click_on_radio_button(self, choice):
-
+        """Создаём словарь с ключом в виде заголовка радио, присваиваем им селекторы"""
         choices = {
             "yes": self.locators.YES_RADIOBUTTON,
             "impressive": self.locators.IMPRESSIVE_RADIOBUTTON,
             "no": self.locators.NO_RADIOBUTTON,
         }
+        """Проверяем видимость и кликаем, choice передаём через аргумент функции"""
         self.element_is_visible(choices[choice]).click()
 
     def get_checked_radio_titles(self):
+        """При выборе радио может отображаться только текст выбранного, поэтому получаем его"""
         return self.element_is_present(self.locators.OUTPUT_RESULT).text
+
+
 
 
 

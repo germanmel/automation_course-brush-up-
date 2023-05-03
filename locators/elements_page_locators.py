@@ -22,8 +22,6 @@ class CheckBoxLocators:
     OUTPUT_RESULTS = (By.CSS_SELECTOR, '.text-success')
 
 class RadioButtonLocators:
-    RADIO_BUTTONS = (By.CSS_SELECTOR, '.custom-radio input')
-    RADI0_TITLE = (By.CSS_SELECTOR, '.custom-control-label')
     YES_RADIOBUTTON = (By.CSS_SELECTOR, '.custom-control-label[for="yesRadio"]')
     IMPRESSIVE_RADIOBUTTON = (By.CSS_SELECTOR, '.custom-control-label[for="impressiveRadio"]')
     NO_RADIOBUTTON = (By.CSS_SELECTOR, '.custom-control-label[for="noRadio"]')
