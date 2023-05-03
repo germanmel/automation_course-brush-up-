@@ -46,6 +46,3 @@ class TestRadioButton:
         assert output_impressive == 'Impressive'
         assert output_no == "No"
 
-    def test_radio_button2(self, driver):
-        radio_button_page = RadioButtonPage(driver, 'https://demoqa.com/radio-button')
-        radio_button_page.open()
