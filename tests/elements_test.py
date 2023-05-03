@@ -36,16 +36,14 @@ class TestRadioButton:
     def test_radio_button(self, driver):
         radio_button_page = RadioButtonPage(driver, 'https://demoqa.com/radio-button')
         radio_button_page.open()
+        """Кликаем по радио указывая ключ соответствующий локатору радио кнопки"""
         radio_button_page.click_on_radio_button("yes")
+        """И получаем отображаемый текст, с остальными аналогично"""
         output_yes = radio_button_page.get_checked_radio_titles()
         radio_button_page.click_on_radio_button("impressive")
         output_impressive = radio_button_page.get_checked_radio_titles()
         radio_button_page.click_on_radio_button("no")
         output_no = radio_button_page.get_checked_radio_titles()
-        assert output_yes == "Yes"
-        assert output_impressive == 'Impressive'
-        assert output_no == "No"
-
-    def test_radio_button2(self, driver):
-        radio_button_page = RadioButtonPage(driver, 'https://demoqa.com/radio-button')
-        radio_button_page.open()
+        assert output_yes == "Yes", '"Yes" radio button haven\'t been selected'
+        assert output_impressive == 'Impressive', '"Impressive" radio button haven\'t been selected'
+        assert output_no == "No", '"No" radio button haven\'t been selected'
