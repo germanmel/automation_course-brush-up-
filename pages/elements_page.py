@@ -1,7 +1,5 @@
-import time
-
 from generator.generator import generated_person
-from locators.elements_page_locators import TextBoxPageLocators, CheckBoxLocators, RadioButtonLocators
+from locators.elements_page_locators import TextBoxPageLocators, CheckBoxLocators, RadioButtonLocators, WebTableLocators
 from pages.base_page import BasePage
 import random
 
@@ -95,7 +93,28 @@ class RadioButtonPage(BasePage):
         """При выборе радио может отображаться только текст выбранного, поэтому получаем его"""
         return self.element_is_present(self.locators.OUTPUT_RESULT).text
 
+class WebTablePage(BasePage):
+    locators = WebTableLocators()
 
+    def add_new_person(self, count=1):
+        while count != 0:
+            person_info = next(generated_person())
+            firstname = person_info.firstname
+            lastname = person_info.lastname
+            email = person_info.email
+            age = person_info.age
+            salary = person_info.salary
+            department = person_info.department
+            self.element_is_visible(self.locators.ADD_BUTTON).click()
+            self.element_is_visible(self.locators.FIRSTNAME_INPUT).send_keys(firstname)
+            self.element_is_visible(self.locators.LASTNAME_INPUT).send_keys(lastname)
+            self.element_is_visible(self.locators.EMAIL_INPUT).send_keys(email)
+            self.element_is_visible(self.locators.AGE_INPUT).send_keys(age)
+            self.element_is_visible(self.locators.SALARY_INPUT).send_keys(salary)
+            self.element_is_visible(self.locators.DEPARTMENT_INPUT).send_keys(department)
+            self.element_is_visible(self.locators.SUBMIT).click()
+            count -= 1
+            return firstname, lastname, email, age, salary, department
 
 
 

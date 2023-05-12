@@ -26,3 +26,13 @@ class RadioButtonLocators:
     IMPRESSIVE_RADIOBUTTON = (By.CSS_SELECTOR, '.custom-control-label[for="impressiveRadio"]')
     NO_RADIOBUTTON = (By.CSS_SELECTOR, '.custom-control-label[for="noRadio"]')
     OUTPUT_RESULT = (By.CSS_SELECTOR, '.text-success')
+
+class WebTableLocators:
+    ADD_BUTTON = (By.CSS_SELECTOR, '#addNewRecordButton')
+    FIRSTNAME_INPUT = (By.CSS_SELECTOR, '#firstName')
+    LASTNAME_INPUT = (By.CSS_SELECTOR, '#lastName')
+    EMAIL_INPUT = (By.CSS_SELECTOR, '#userEmail')
+    AGE_INPUT = (By.CSS_SELECTOR, '#age')
+    SALARY_INPUT = (By.CSS_SELECTOR, '#salary')
+    DEPARTMENT_INPUT = (By.CSS_SELECTOR, '#department')
+    SUBMIT = (By.CSS_SELECTOR, '#submit')
