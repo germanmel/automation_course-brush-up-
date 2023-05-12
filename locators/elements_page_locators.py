@@ -28,6 +28,7 @@ class RadioButtonLocators:
     OUTPUT_RESULT = (By.CSS_SELECTOR, '.text-success')
 
 class WebTableLocators:
+    #add person form
     ADD_BUTTON = (By.CSS_SELECTOR, '#addNewRecordButton')
     FIRSTNAME_INPUT = (By.CSS_SELECTOR, '#firstName')
     LASTNAME_INPUT = (By.CSS_SELECTOR, '#lastName')
@@ -36,3 +37,6 @@ class WebTableLocators:
     SALARY_INPUT = (By.CSS_SELECTOR, '#salary')
     DEPARTMENT_INPUT = (By.CSS_SELECTOR, '#department')
     SUBMIT = (By.CSS_SELECTOR, '#submit')
+
+    #table
+    FULL_PERSONS_LIST = (By.CSS_SELECTOR, 'div[class="rt-tr-group"')

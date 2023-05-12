@@ -96,7 +96,8 @@ class RadioButtonPage(BasePage):
 class WebTablePage(BasePage):
     locators = WebTableLocators()
 
-    def add_new_person(self, count=1):
+    def add_new_person(self, count=3):
+        new_persons = []
         while count != 0:
             person_info = next(generated_person())
             firstname = person_info.firstname
@@ -114,7 +115,19 @@ class WebTablePage(BasePage):
             self.element_is_visible(self.locators.DEPARTMENT_INPUT).send_keys(department)
             self.element_is_visible(self.locators.SUBMIT).click()
             count -= 1
-            return firstname, lastname, email, age, salary, department
+            """Возвращаем в виде списка элементов(по умолчанию tuple), меняем тип данных для соответствия проверке,
+            добавляем в список new_person список каждого юзера, если их несколько"""
+            new_persons.append([firstname, lastname, str(age), email, str(salary), department])
+        return new_persons
+
+    def check_new_person(self):
+        person_list = self.elements_are_present(self.locators.FULL_PERSONS_LIST)
+        person_data = []
+        for person in person_list:
+            """Проходим по каждой строке списка и получаем текст из неё,
+            с помощью splitlines() разделяя слова символом новой строки избавляясь от '\n' в списке"""
+            person_data.append(person.text.splitlines())
+        return person_data
 
 
 
