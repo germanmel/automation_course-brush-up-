@@ -96,7 +96,7 @@ class RadioButtonPage(BasePage):
 class WebTablePage(BasePage):
     locators = WebTableLocators()
 
-    def add_new_person(self, count=3):
+    def add_new_person(self, count=1):
         new_persons = []
         while count != 0:
             person_info = next(generated_person())
@@ -128,6 +128,18 @@ class WebTablePage(BasePage):
             с помощью splitlines() разделяя слова символом новой строки избавляясь от '\n' в списке"""
             person_data.append(person.text.splitlines())
         return person_data
+
+    def search_some_person(self, key_word):
+        """Отправляем в строку поиска ключ"""
+        self.element_is_visible(self.locators.SEARCH_INPUT).send_keys(key_word)
+
+
+    def check_search_person(self):
+        """Сохраняем кнопку удаления в переменную"""
+        delete_button = self.element_is_present(self.locators.DELETE_BUTTON)
+        """Находим строку с данными по строке с кнопкой delete"""
+        row = delete_button.find_element(*self.locators.ROW_PARENT)
+        return row.text.splitlines()
 
 
 

@@ -1,6 +1,7 @@
 import time
 
 from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage
+from random import randint
 
 
 class TestTextBox:
@@ -57,3 +58,11 @@ class TestWebTable:
         table_data = web_table_page.check_new_person()
         for person in new_person:
             assert person in table_data, f"User {person} doesn't exist in table data: {table_data}"
+
+    def test_web_table_search_person(self, driver):
+        web_table_page = WebTablePage(driver, 'https://demoqa.com/webtables')
+        web_table_page.open()
+        key_word = web_table_page.add_new_person()[0][randint(0, 5)]
+        web_table_page.search_some_person(key_word)
+        table_result = web_table_page.check_search_person()
+        assert key_word in table_result, f"Word {key_word} not contains in {table_result}"
