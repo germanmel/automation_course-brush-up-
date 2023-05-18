@@ -97,6 +97,8 @@ class WebTablePage(BasePage):
     locators = WebTableLocators()
 
     def add_new_person(self, count=1):
+        """В метод передаём количество юзеров для создания, генерируем данные в цикле и отправляем в поля,
+        после создания юзера добавляем в массив список данных юзера"""
         new_persons = []
         while count != 0:
             person_info = next(generated_person())
