@@ -39,4 +39,7 @@ class WebTableLocators:
     SUBMIT = (By.CSS_SELECTOR, '#submit')
 
     #table
-    FULL_PERSONS_LIST = (By.CSS_SELECTOR, 'div[class="rt-tr-group"')
+    FULL_PERSONS_LIST = (By.CSS_SELECTOR, 'div[class="rt-tr-group"]')
+    SEARCH_INPUT = (By.CSS_SELECTOR, 'input[id="searchBox"]')
+    DELETE_BUTTON = (By.CSS_SELECTOR, 'span[title="Delete"]')
+    ROW_PARENT = (By.XPATH, './/ancestor::div[@class="rt-tr-group"]')
