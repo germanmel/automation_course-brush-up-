@@ -1,3 +1,8 @@
+import time
+
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
+
 from generator.generator import generated_person
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxLocators, RadioButtonLocators, WebTableLocators
 from pages.base_page import BasePage
@@ -159,6 +164,25 @@ class WebTablePage(BasePage):
 
     def check_deleted_person(self):
         return self.element_is_present(self.locators.NO_ROWS_FOUND).text
+
+    def select_up_to_some_rows(self):
+        count = []
+        """Находим дропдаун"""
+        element = self.element_is_visible(self.locators.CHANGE_ROWS_DROPDOWN)
+        """Генерируем список значений из селектора"""
+        options = [i.get_attribute('value') for i in element.find_elements(By.TAG_NAME, 'option')]
+        dropdown = Select(element)
+        """Кликаем по каждому элементу списка и считаем строки"""
+        for option in options:
+            dropdown.select_by_value(option)
+            count.append(str(self.check_count_rows()))
+        return count, options
+
+    def check_count_rows(self):
+        list_rows = self.elements_are_present(self.locators.FULL_PERSONS_LIST)
+        return len(list_rows)
+
+
 
 
 

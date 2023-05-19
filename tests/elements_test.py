@@ -89,3 +89,11 @@ class TestWebTable:
         text = web_table_page.check_deleted_person()
         time.sleep(2)
         assert text == "No rows found", f"Text {text} differs from expexted 'No rows found"
+
+    def test_web_table_change_count(self, driver):
+        web_table_page = WebTablePage(driver, 'https://demoqa.com/webtables')
+        web_table_page.open()
+        count, options = web_table_page.select_up_to_some_rows()
+        print(count)
+        print(options)
+        assert count == options

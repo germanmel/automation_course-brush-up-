@@ -47,3 +47,4 @@ class WebTableLocators:
     #update
     UPDATE_BUTTON = (By.CSS_SELECTOR, 'span[title="Edit"]')
     NO_ROWS_FOUND = (By.CSS_SELECTOR, 'div[class="rt-noData"]')
+    CHANGE_ROWS_DROPDOWN = (By.TAG_NAME, 'select')
