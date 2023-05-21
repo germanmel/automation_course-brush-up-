@@ -178,6 +178,20 @@ class WebTablePage(BasePage):
             count.append(str(self.check_count_rows()))
         return count, options
 
+    def select_up_to_some_rows_reverse(self):
+        count = []
+        """Находим дропдаун"""
+        element = self.element_is_clickable(self.locators.CHANGE_ROWS_DROPDOWN)
+        """Генерируем список значений из селектора и разворачиваем его"""
+        options = [i.get_attribute('value') for i in element.find_elements(By.TAG_NAME, 'option')]
+        options.reverse()
+        dropdown = Select(element)
+        """Кликаем по каждому элементу списка и считаем строки"""
+        for option in options:
+            dropdown.select_by_value(option)
+            count.append(str(self.check_count_rows()))
+        return count, options
+
     def check_count_rows(self):
         list_rows = self.elements_are_present(self.locators.FULL_PERSONS_LIST)
         return len(list_rows)

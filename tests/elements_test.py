@@ -94,6 +94,10 @@ class TestWebTable:
         web_table_page = WebTablePage(driver, 'https://demoqa.com/webtables')
         web_table_page.open()
         count, options = web_table_page.select_up_to_some_rows()
-        print(count)
-        print(options)
+        assert count == options
+
+    def test_web_table_change_count_reverse(self, driver):
+        web_table_page = WebTablePage(driver, 'https://demoqa.com/webtables')
+        web_table_page.open()
+        count, options = web_table_page.select_up_to_some_rows_reverse()
         assert count == options
