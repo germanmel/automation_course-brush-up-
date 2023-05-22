@@ -1,3 +1,5 @@
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -40,3 +42,5 @@ class BasePage:
     """Скролл страницы к элементу"""
     def go_to_element(self, locator):
         return self.driver.execute_script("arguments[0].scrollIntoView();", locator)
+
+

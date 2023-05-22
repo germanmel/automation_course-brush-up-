@@ -26,3 +26,25 @@ class RadioButtonLocators:
     IMPRESSIVE_RADIOBUTTON = (By.CSS_SELECTOR, '.custom-control-label[for="impressiveRadio"]')
     NO_RADIOBUTTON = (By.CSS_SELECTOR, '.custom-control-label[for="noRadio"]')
     OUTPUT_RESULT = (By.CSS_SELECTOR, '.text-success')
+
+class WebTableLocators:
+    #add person form
+    ADD_BUTTON = (By.CSS_SELECTOR, '#addNewRecordButton')
+    FIRSTNAME_INPUT = (By.CSS_SELECTOR, '#firstName')
+    LASTNAME_INPUT = (By.CSS_SELECTOR, '#lastName')
+    EMAIL_INPUT = (By.CSS_SELECTOR, '#userEmail')
+    AGE_INPUT = (By.CSS_SELECTOR, '#age')
+    SALARY_INPUT = (By.CSS_SELECTOR, '#salary')
+    DEPARTMENT_INPUT = (By.CSS_SELECTOR, '#department')
+    SUBMIT = (By.CSS_SELECTOR, '#submit')
+
+    #table
+    FULL_PERSONS_LIST = (By.CSS_SELECTOR, 'div[class="rt-tr-group"]')
+    SEARCH_INPUT = (By.CSS_SELECTOR, 'input[id="searchBox"]')
+    DELETE_BUTTON = (By.CSS_SELECTOR, 'span[title="Delete"]')
+    ROW_PARENT = (By.XPATH, './/ancestor::div[@class="rt-tr-group"]')
+
+    #update
+    UPDATE_BUTTON = (By.CSS_SELECTOR, 'span[title="Edit"]')
+    NO_ROWS_FOUND = (By.CSS_SELECTOR, 'div[class="rt-noData"]')
+    CHANGE_ROWS_DROPDOWN = (By.TAG_NAME, 'select')

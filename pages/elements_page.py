@@ -1,7 +1,10 @@
 import time
 
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
+
 from generator.generator import generated_person
-from locators.elements_page_locators import TextBoxPageLocators, CheckBoxLocators, RadioButtonLocators
+from locators.elements_page_locators import TextBoxPageLocators, CheckBoxLocators, RadioButtonLocators, WebTableLocators
 from pages.base_page import BasePage
 import random
 
@@ -95,6 +98,103 @@ class RadioButtonPage(BasePage):
         """При выборе радио может отображаться только текст выбранного, поэтому получаем его"""
         return self.element_is_present(self.locators.OUTPUT_RESULT).text
 
+class WebTablePage(BasePage):
+    locators = WebTableLocators()
+
+    def add_new_person(self, count=1):
+        """В метод передаём количество юзеров для создания, генерируем данные в цикле и отправляем в поля,
+        после создания юзера добавляем в массив список данных юзера"""
+        new_persons = []
+        while count != 0:
+            person_info = next(generated_person())
+            firstname = person_info.firstname
+            lastname = person_info.lastname
+            email = person_info.email
+            age = person_info.age
+            salary = person_info.salary
+            department = person_info.department
+            self.element_is_visible(self.locators.ADD_BUTTON).click()
+            self.element_is_visible(self.locators.FIRSTNAME_INPUT).send_keys(firstname)
+            self.element_is_visible(self.locators.LASTNAME_INPUT).send_keys(lastname)
+            self.element_is_visible(self.locators.EMAIL_INPUT).send_keys(email)
+            self.element_is_visible(self.locators.AGE_INPUT).send_keys(age)
+            self.element_is_visible(self.locators.SALARY_INPUT).send_keys(salary)
+            self.element_is_visible(self.locators.DEPARTMENT_INPUT).send_keys(department)
+            self.element_is_visible(self.locators.SUBMIT).click()
+            count -= 1
+            """Возвращаем в виде списка элементов(по умолчанию tuple), меняем тип данных для соответствия проверке,
+            добавляем в список new_person список каждого юзера, если их несколько"""
+            new_persons.append([firstname, lastname, str(age), email, str(salary), department])
+        return new_persons
+
+    def check_new_person(self):
+        person_list = self.elements_are_present(self.locators.FULL_PERSONS_LIST)
+        person_data = []
+        for person in person_list:
+            """Проходим по каждой строке списка и получаем текст из неё,
+            с помощью splitlines() разделяя слова символом новой строки избавляясь от '\n' в списке"""
+            person_data.append(person.text.splitlines())
+        return person_data
+
+    def search_some_person(self, key_word):
+        """Отправляем в строку поиска ключ"""
+        self.element_is_visible(self.locators.SEARCH_INPUT).send_keys(key_word)
+
+
+    def check_search_person(self):
+        """Сохраняем кнопку удаления в переменную"""
+        delete_button = self.element_is_present(self.locators.DELETE_BUTTON)
+        """Находим строку с данными по строке с кнопкой delete"""
+        row = delete_button.find_element(*self.locators.ROW_PARENT)
+        return row.text.splitlines()
+
+    def update_person_info(self):
+        person_info = next(generated_person())
+        age = person_info.age
+        self.element_is_clickable(self.locators.UPDATE_BUTTON).click()
+        input = self.element_is_visible(self.locators.AGE_INPUT)
+        input.clear()
+        input.send_keys(age)
+        submit = self.element_is_visible(self.locators.SUBMIT)
+        submit.click()
+        return age
+
+    def delete_person(self):
+        self.element_is_clickable(self.locators.DELETE_BUTTON).click()
+
+    def check_deleted_person(self):
+        return self.element_is_present(self.locators.NO_ROWS_FOUND).text
+
+    def select_up_to_some_rows(self):
+        count = []
+        """Находим дропдаун"""
+        element = self.element_is_visible(self.locators.CHANGE_ROWS_DROPDOWN)
+        """Генерируем список значений из селектора"""
+        options = [i.get_attribute('value') for i in element.find_elements(By.TAG_NAME, 'option')]
+        dropdown = Select(element)
+        """Кликаем по каждому элементу списка и считаем строки"""
+        for option in options:
+            dropdown.select_by_value(option)
+            count.append(str(self.check_count_rows()))
+        return count, options
+
+    def select_up_to_some_rows_reverse(self):
+        count = []
+        """Находим дропдаун"""
+        element = self.element_is_clickable(self.locators.CHANGE_ROWS_DROPDOWN)
+        """Генерируем список значений из селектора и разворачиваем его"""
+        options = [i.get_attribute('value') for i in element.find_elements(By.TAG_NAME, 'option')]
+        options.reverse()
+        dropdown = Select(element)
+        """Кликаем по каждому элементу списка и считаем строки"""
+        for option in options:
+            dropdown.select_by_value(option)
+            count.append(str(self.check_count_rows()))
+        return count, options
+
+    def check_count_rows(self):
+        list_rows = self.elements_are_present(self.locators.FULL_PERSONS_LIST)
+        return len(list_rows)
 
 
 
