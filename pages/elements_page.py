@@ -4,7 +4,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
 from generator.generator import generated_person
-from locators.elements_page_locators import TextBoxPageLocators, CheckBoxLocators, RadioButtonLocators, WebTableLocators
+from locators.elements_page_locators import TextBoxPageLocators, CheckBoxLocators, RadioButtonLocators, \
+    WebTableLocators, ButtonsPageLocators
 from pages.base_page import BasePage
 import random
 
@@ -189,7 +190,7 @@ class WebTablePage(BasePage):
         """Кликаем по каждому элементу списка и считаем строки"""
         for option in options:
             dropdown.select_by_value(option)
-            count.append(str(self.check_count_rows()))
+            count.append(str(self.check_count_rows()))  # Строки т.к. генерируем опции строковыми атрибутами value
         return count, options
 
     def check_count_rows(self):
@@ -197,6 +198,21 @@ class WebTablePage(BasePage):
         return len(list_rows)
 
 
+class ButtonsPage(BasePage):
+
+    locators = ButtonsPageLocators()
+
+    def click_on_different_button(self, type_click):
+        if type_click == "double":
+            self.double_click(self.element_is_clickable(self.locators.DOUBLE_CLICK_BUTTON))
+            return self.get_clickled_buttons_text(self.locators.SUCCESS_DOUBLE)
+        if type_click == "right":
+            self.right_click(self.element_is_clickable(self.locators.RIGHT_CLICK_BUTTON))
+            return self.get_clickled_buttons_text(self.locators.SUCCESS_RIGHT)
+        if type_click == "click":
+            self.element_is_clickable(self.locators.CLICK_ME_BUTTON).click()
+            return self.get_clickled_buttons_text(self.locators.SUCCESS_CLICK_ME)
 
 
-
+    def get_clickled_buttons_text(self, element):
+        return self.element_is_present(element).text

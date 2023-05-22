@@ -1,3 +1,4 @@
+from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait as wait
@@ -40,7 +41,17 @@ class BasePage:
         return wait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
 
     """Скролл страницы к элементу"""
-    def go_to_element(self, locator):
-        return self.driver.execute_script("arguments[0].scrollIntoView();", locator)
+    def go_to_element(self, element):
+        return self.driver.execute_script("arguments[0].scrollIntoView();", element)
 
+    """Двойной клик по элементу"""
+    def double_click(self, element):
+        action = ActionChains(self.driver)
+        action.double_click(element)
+        action.perform()
 
+    """Правый клик по элементу"""
+    def right_click(self, element):
+        action = ActionChains(self.driver)
+        action.context_click(element)
+        action.perform()

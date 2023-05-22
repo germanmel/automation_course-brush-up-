@@ -1,6 +1,6 @@
 import time
 
-from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage
+from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage
 from random import randint
 
 
@@ -101,3 +101,15 @@ class TestWebTable:
         web_table_page.open()
         count, options = web_table_page.select_up_to_some_rows_reverse()
         assert count == options
+
+class TestButtonPage:
+
+    def test_different_click_on_the_buttons(self, driver):
+        button_page = ButtonsPage(driver, 'https://demoqa.com/buttons')
+        button_page.open()
+        double = button_page.click_on_different_button("double")
+        right = button_page.click_on_different_button("right")
+        click = button_page.click_on_different_button("click")
+        assert double == 'You have done a double click', f"Success text for double click: {double} isn't correct"
+        assert right == 'You have done a right click', f"Success text for right click: {right} isn't correct"
+        assert click == 'You have done a dynamic click', f"Success text for click me: {click} isn't correct"
