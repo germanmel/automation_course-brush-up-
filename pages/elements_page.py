@@ -1,11 +1,11 @@
 import time
-
+import requests
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
 from generator.generator import generated_person
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxLocators, RadioButtonLocators, \
-    WebTableLocators, ButtonsPageLocators
+    WebTableLocators, ButtonsPageLocators, LinkPageLocators
 from pages.base_page import BasePage
 import random
 
@@ -216,3 +216,29 @@ class ButtonsPage(BasePage):
 
     def get_clickled_buttons_text(self, element):
         return self.element_is_present(element).text
+
+class LinksPage(BasePage):
+
+    locators = LinkPageLocators()
+    """Метод получает ссылку из элемента, открывает новую вкладку(указывает селену работать с ней handles[1]
+    и получает текущий url вкладки для сравнения в тесте"""
+    def check_new_tab_link(self, locator):
+        simple_link = self.element_is_visible(locator)
+        link_href = simple_link.get_attribute('href')
+        request = requests.get(link_href)
+        if request.status_code == 200:
+            simple_link.click()
+            self.driver.switch_to.window(self.driver.window_handles[1])
+            tab_url = self.driver.current_url
+            return tab_url
+
+        else:
+            return request.status_code
+    """Метод принимает ссылку и локатор кнопки"""
+    def check_link_status(self, url, locator):
+        request = requests.get(url)
+        if request.status_code == 200:
+            self.element_is_present(locator).click()
+        else:
+            return request.status_code
+

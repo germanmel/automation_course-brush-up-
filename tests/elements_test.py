@@ -1,7 +1,8 @@
 import time
-
-from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage
+import pytest
+from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage
 from random import randint
+from locators.elements_page_locators import LinkPageLocators
 
 
 class TestTextBox:
@@ -113,3 +114,89 @@ class TestButtonPage:
         assert double == 'You have done a double click', f"Success text for double click: {double} isn't correct"
         assert right == 'You have done a right click', f"Success text for right click: {right} isn't correct"
         assert click == 'You have done a dynamic click', f"Success text for click me: {click} isn't correct"
+
+class TestLinksPage:
+
+    locators = LinkPageLocators()
+    """Проверяем что новая вкладка открывается на домашней"""
+    def test_home_link(self, driver):
+        links_page = LinksPage(driver, 'https://demoqa.com/links')
+        links_page.open()
+        tab_url = links_page.check_new_tab_link(self.locators.SIMPLE_HOME_LINK)
+        base_url = 'https://demoqa.com/'
+        print(tab_url)
+        print(base_url)
+        assert tab_url == base_url, f"Tab url {tab_url} is incorrect, expected {base_url}"
+
+    def test_home_link_dynamic(self, driver):
+        links_page = LinksPage(driver, 'https://demoqa.com/links')
+        links_page.open()
+        tab_url = links_page.check_new_tab_link(self.locators.DYNAMIC_HOME_LINK)
+        base_url = 'https://demoqa.com/'
+        print(tab_url)
+        print(base_url)
+        assert tab_url == base_url, f"Tab url {tab_url} is incorrect, expected {base_url}"
+
+
+    def test_created_link(self, driver):
+        links_page = LinksPage(driver, 'https://demoqa.com/links')
+        links_page.open()
+        response_code = links_page.check_link_status('https://demoqa.com/created', self.locators.CREATED)
+        expected_code = 201
+        print(response_code)
+        print(expected_code)
+        assert response_code == expected_code, f"Response code: {response_code}, expected {expected_code}"
+
+    def test_no_content_link(self, driver):
+        links_page = LinksPage(driver, 'https://demoqa.com/links')
+        links_page.open()
+        response_code = links_page.check_link_status('https://demoqa.com/no-content', self.locators.NO_CONTENT)
+        expected_code = 204
+        print(response_code)
+        print(expected_code)
+        assert response_code == expected_code, f"Response code: {response_code}, expected {expected_code}"
+
+    def test_moved_link(self, driver):
+        links_page = LinksPage(driver, 'https://demoqa.com/links')
+        links_page.open()
+        response_code = links_page.check_link_status('https://demoqa.com/moved', self.locators.MOVED)
+        expected_code = 301
+        print(response_code)
+        print(expected_code)
+        assert response_code == expected_code, f"Response code: {response_code}, expected {expected_code}"
+
+    def test_bad_request_link(self, driver):
+        links_page = LinksPage(driver, 'https://demoqa.com/links')
+        links_page.open()
+        response_code = links_page.check_link_status('https://demoqa.com/bad-request', self.locators.BAD_REQUEST)
+        expected_code = 400
+        print(response_code)
+        print(expected_code)
+        assert response_code == expected_code, f"Response code: {response_code}, expected {expected_code}"
+
+    def test_unauthorized_link(self, driver):
+        links_page = LinksPage(driver, 'https://demoqa.com/links')
+        links_page.open()
+        response_code = links_page.check_link_status('https://demoqa.com/unauthorized', self.locators.UNAUTHORIZED)
+        expected_code = 401
+        print(response_code)
+        print(expected_code)
+        assert response_code == expected_code, f"Response code: {response_code}, expected {expected_code}"
+
+    def test_forbidden_link(self, driver):
+        links_page = LinksPage(driver, 'https://demoqa.com/links')
+        links_page.open()
+        response_code = links_page.check_link_status('https://demoqa.com/forbidden', self.locators.FORBIDDEN)
+        expected_code = 403
+        print(response_code)
+        print(expected_code)
+        assert response_code == expected_code, f"Response code: {response_code}, expected {expected_code}"
+
+    def test_not_found_link(self, driver):
+        links_page = LinksPage(driver, 'https://demoqa.com/links')
+        links_page.open()
+        response_code = links_page.check_link_status('https://demoqa.com/invalid-url', self.locators.NOT_FOUND)
+        expected_code = 404
+        print(response_code)
+        print(expected_code)
+        assert response_code == expected_code, f"Response code: {response_code}, expected {expected_code}"
