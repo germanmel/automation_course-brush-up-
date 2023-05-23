@@ -18,3 +18,10 @@ def generated_person():  # генератор данных
         current_adress=faker_ru.address(),
         permanent_adress=faker_ru.address()
     )
+
+def generated_file():
+    path = rf'D:\_QA_study\automation_course_brush_up\testfile{randint(0,999)}.txt'
+    file = open(path, 'w+')
+    file.write(f"Test text{randint(0,999)}")
+    file.close()
+    return file.name, path

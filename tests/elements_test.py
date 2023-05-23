@@ -1,6 +1,7 @@
 import time
 import pytest
-from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage
+from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage, \
+    FilePage
 from random import randint
 from locators.elements_page_locators import LinkPageLocators
 
@@ -200,3 +201,22 @@ class TestLinksPage:
         print(response_code)
         print(expected_code)
         assert response_code == expected_code, f"Response code: {response_code}, expected {expected_code}"
+
+class TestFilePage:
+
+    def test_upload_file(self, driver):
+        file_page = FilePage(driver, 'https://demoqa.com/upload-download')
+        file_page.open()
+        file_name, text = file_page.upload_file()
+        print(file_name)
+        print(text)
+        assert file_name == text
+
+
+
+    def test_download_file(self, driver):
+        file_page = FilePage(driver, 'https://demoqa.com/upload-download')
+        file_page.open()
+
+
+

@@ -71,3 +71,7 @@ class LinkPageLocators:
     FORBIDDEN = (By.CSS_SELECTOR, 'a[id="forbidden"]')
     NOT_FOUND = (By.CSS_SELECTOR, 'a[id="invalid-url"]')
 
+class FilePageLocators:
+    UPLOAD_FILE = (By.CSS_SELECTOR, 'input[id="uploadFile"]')
+    UPLOADED_RESULT = (By.CSS_SELECTOR, 'p[id="uploadedFilePath"]')
+
