@@ -208,9 +208,14 @@ class TestFilePage:
         file_page = FilePage(driver, 'https://demoqa.com/upload-download')
         file_page.open()
         file_name, text = file_page.upload_file()
-        print(file_name)
-        print(text)
-        assert file_name == text
+        assert file_name == text, f"File name on page: {text} differs from upload file name: {file_name}"
+
+    """Загрузка файла созданного во временной директории"""
+    def test_upload_file_from_tmp(self, driver, tmp_path):
+        file_page = FilePage(driver, 'https://demoqa.com/upload-download')
+        file_page.open()
+        file_name, text = file_page.upload_file_from_tmp_directory(tmp_path)
+        assert file_name == text, f"File name on page: {text} differs from upload file name: {file_name}"
 
 
 

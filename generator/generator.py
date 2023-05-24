@@ -25,3 +25,11 @@ def generated_file():
     file.write(f"Test text{randint(0,999)}")
     file.close()
     return file.name, path
+
+"""Метод генерации во временной директории с передачей фикстуры tmp_path в тест"""
+def generated_file_tmp_directory(tmp_path):
+    path = tmp_path / "test_files"
+    path.mkdir()
+    file = path / f"testfile_{randint(0, 999)}.txt"
+    file.write_text(f"Test text_{randint(0, 999)}")
+    return file.name, path

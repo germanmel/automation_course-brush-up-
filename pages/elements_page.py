@@ -4,7 +4,7 @@ import requests
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
-from generator.generator import generated_person, generated_file
+from generator.generator import generated_person, generated_file, generated_file_tmp_directory
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxLocators, RadioButtonLocators, \
     WebTableLocators, ButtonsPageLocators, LinkPageLocators, FilePageLocators
 from pages.base_page import BasePage
@@ -248,9 +248,21 @@ class FilePage(BasePage):
     locators = FilePageLocators()
 
     def upload_file(self):
+        """Генерируем файл, получаем путь и его имя"""
         file_name, path = generated_file()
+        """Отправляем файл в инпут"""
         self.element_is_visible(self.locators.UPLOAD_FILE).send_keys(path)
+        """Удаляем файл, для метода ниже с временной директорией не актуально"""
         os.remove(path)
+        """Получаем путь отображаемый после загрузки файла, отсекаем всё кроме имени файла"""
+        text = str(self.element_is_visible(self.locators.UPLOADED_RESULT).text)
+        return file_name.split('\\')[-1], text.split('\\')[-1]
+
+    def upload_file_from_tmp_directory(self, tmp_path):
+        file_name, path = generated_file_tmp_directory(tmp_path)
+        print(file_name)
+        print(path)
+        self.element_is_visible(self.locators.UPLOAD_FILE).send_keys(f'{path}\{file_name}')
         time.sleep(5)
         text = str(self.element_is_visible(self.locators.UPLOADED_RESULT).text)
         return file_name.split('\\')[-1], text.split('\\')[-1]
