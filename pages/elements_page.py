@@ -7,7 +7,7 @@ from selenium.webdriver.support.select import Select
 
 from generator.generator import generated_person, generated_file, generated_file_tmp_directory
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxLocators, RadioButtonLocators, \
-    WebTableLocators, ButtonsPageLocators, LinkPageLocators, FilePageLocators
+    WebTableLocators, ButtonsPageLocators, LinkPageLocators, FilePageLocators, DynamicPropertiesPageLocators
 from pages.base_page import BasePage
 import random
 
@@ -287,6 +287,28 @@ class FilePage(BasePage):
             f.close()
         os.remove(path_name_file)  # удаляем файл
         return check_file
+
+class DynamicPropertiesPage(BasePage):
+
+    locators = DynamicPropertiesPageLocators()
+
+    def check_changed_of_color(self):
+        color_button = self.element_is_present(self.locators.COLOR_CHANGE_BUTTON)
+        color_button_before = color_button.value_of_css_property('color')
+        self.element_is_clickable(self.locators.DISABLED_BUTTON)
+        color_button_after = color_button.value_of_css_property('color')
+        print(color_button_before)
+        print(color_button_after)
+        return color_button_before, color_button_after
+
+    def check_appear_of_button(self):
+        try:
+            self.element_is_visible(self.locators.VISIBLE_AFTER_5SEC_BUTTON)
+        except TimeoutException:
+            return False
+        return True
+
+
 
 
 

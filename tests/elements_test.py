@@ -1,7 +1,7 @@
 import time
 import pytest
 from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage, \
-    FilePage
+    FilePage, DynamicPropertiesPage
 from random import randint
 from locators.elements_page_locators import LinkPageLocators
 
@@ -224,6 +224,21 @@ class TestFilePage:
         file_page.open()
         check = file_page.download_file()
         assert check is True, "The file hasn't been downloaded"
+
+class TestDynamicPropertiesPage: # Проверить тесты после решения проблемы с загрузкой страницы из-за рекламы
+
+    def test_dynamic_properties(self, driver):
+        dynamic_page = DynamicPropertiesPage(driver, 'https://demoqa.com/dynamic-properties')
+        dynamic_page.open()
+        color_before, color_after = dynamic_page.check_changed_of_color()
+        assert color_after != color_before, "Color of button hasn't been changed"
+
+    def test_appear_button(self,driver):
+        dynamic_page = DynamicPropertiesPage(driver, 'https://demoqa.com/dynamic-properties')
+        dynamic_page.open()
+        appear = dynamic_page.check_appear_of_button()
+        assert appear is True
+
 
 
 
