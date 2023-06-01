@@ -203,14 +203,14 @@ class TestLinksPage:
         assert response_code == expected_code, f"Response code: {response_code}, expected {expected_code}"
 
 class TestFilePage:
-
+    """Загрузка файла как сделано в курсе"""
     def test_upload_file(self, driver):
         file_page = FilePage(driver, 'https://demoqa.com/upload-download')
         file_page.open()
         file_name, text = file_page.upload_file()
         assert file_name == text, f"File name on page: {text} differs from upload file name: {file_name}"
 
-    """Загрузка файла созданного во временной директории"""
+    """Загрузка файла созданного во временной директории, самостоятельная работа"""
     def test_upload_file_from_tmp(self, driver, tmp_path):
         file_page = FilePage(driver, 'https://demoqa.com/upload-download')
         file_page.open()
@@ -222,6 +222,9 @@ class TestFilePage:
     def test_download_file(self, driver):
         file_page = FilePage(driver, 'https://demoqa.com/upload-download')
         file_page.open()
+        check = file_page.download_file()
+        assert check is True, "The file hasn't been downloaded"
+
 
 
 

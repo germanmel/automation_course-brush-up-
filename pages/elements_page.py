@@ -1,3 +1,4 @@
+import base64
 import os
 import time
 import requests
@@ -258,6 +259,8 @@ class FilePage(BasePage):
         text = str(self.element_is_visible(self.locators.UPLOADED_RESULT).text)
         return file_name.split('\\')[-1], text.split('\\')[-1]
 
+    """Генерируем файл во временной директории, получаем путь и имя
+    tmp_path - фикстура которую нужно передать в тест"""
     def upload_file_from_tmp_directory(self, tmp_path):
         file_name, path = generated_file_tmp_directory(tmp_path)
         print(file_name)
@@ -267,6 +270,23 @@ class FilePage(BasePage):
         text = str(self.element_is_visible(self.locators.UPLOADED_RESULT).text)
         return file_name.split('\\')[-1], text.split('\\')[-1]
 
+    def download_file(self):
+        download_btn = self.element_is_visible(self.locators.DOWNLOAD_BUTTON)
+        """Получаем ссылку на файл с кнопки скачивания"""
+        link = download_btn.get_attribute('href')  # если юзать .split(',')
+        """Декодируем в байты"""
+        link_b = base64.b64decode(link)  # тогда можно указать link[1] и убрать offset ниже
+        path_name_file = rf'D:\_QA_study\automation_course_brush_up\testfile{random.randint(0, 999)}.jpg'
+        """В директории выше создаём двоичный файл для чтения и записи (wb+)"""
+        with open(path_name_file, 'wb+') as f:
+            """Отсекаем лишнее и записываем только байты файла"""
+            offset = link_b.find(b'\xff\xd8')
+            f.write(link_b[offset:])
+            """Проверяем что файл существует"""
+            check_file = os.path.exists(path_name_file)
+            f.close()
+        os.remove(path_name_file)  # удаляем файл
+        return check_file
 
 
 
