@@ -63,8 +63,13 @@ class BasePage:
         action.context_click(element)
         action.perform()
 
+    """Убрать футер со страницы"""
     def remove_footer(self):
         self.driver.execute_script("document.getElementsByTagName('footer')[0].remove();")
         self.driver.execute_script("document.getElementsById('close-fixedban').remove();")
+
+    """Переключиться на окно по индексу"""
+    def switch_to_window(self, window_number):
+        self.driver.switch_to.window(self.driver.window_handles[window_number])
 
 
