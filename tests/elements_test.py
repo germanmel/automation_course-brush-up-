@@ -225,9 +225,10 @@ class TestFilePage:
         check = file_page.download_file()
         assert check is True, "The file hasn't been downloaded"
 
+@pytest.mark.xfail(reason="Failed due to too long loading page")
 class TestDynamicPropertiesPage: # Проверить тесты после решения проблемы с загрузкой страницы из-за рекламы
 
-    def test_dynamic_properties(self, driver):
+    def test_change_button_color(self, driver):
         dynamic_page = DynamicPropertiesPage(driver, 'https://demoqa.com/dynamic-properties')
         dynamic_page.open()
         color_before, color_after = dynamic_page.check_changed_of_color()
@@ -238,6 +239,8 @@ class TestDynamicPropertiesPage: # Проверить тесты после ре
         dynamic_page.open()
         appear = dynamic_page.check_appear_of_button()
         assert appear is True
+
+
 
 
 

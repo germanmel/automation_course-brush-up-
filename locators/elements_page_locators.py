@@ -80,3 +80,5 @@ class DynamicPropertiesPageLocators:
     DISABLED_BUTTON = (By.CSS_SELECTOR, 'button[id="enableAfter"]')
     COLOR_CHANGE_BUTTON = (By.CSS_SELECTOR, 'button[id="colorChange"]')
     VISIBLE_AFTER_5SEC_BUTTON = (By.CSS_SELECTOR, 'button[id="visibleAfter"]')
+
+

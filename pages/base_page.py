@@ -21,7 +21,10 @@ class BasePage:
         self.driver.get(self.url)
 
     """Элемент виден на странице"""
+    # def element_is_visible(self, locator, timeout=5):
+    #     return wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
     def element_is_visible(self, locator, timeout=5):
+        self.go_to_element(self.element_is_present(locator))
         return wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
 
     """Элементы видны на странице"""
@@ -60,7 +63,8 @@ class BasePage:
         action.context_click(element)
         action.perform()
 
-    def switch_to_tab_by_index(self):
-        return self.driver.switch_to()
+    def remove_footer(self):
+        self.driver.execute_script("document.getElementsByTagName('footer')[0].remove();")
+        self.driver.execute_script("document.getElementsById('close-fixedban').remove();")
 
 

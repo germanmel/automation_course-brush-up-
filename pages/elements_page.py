@@ -1,7 +1,10 @@
 import base64
 import os
 import time
+
+import faker
 import requests
+from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
@@ -169,6 +172,7 @@ class WebTablePage(BasePage):
         return self.element_is_present(self.locators.NO_ROWS_FOUND).text
 
     def select_up_to_some_rows(self):
+        self.remove_footer()
         count = []
         """Находим дропдаун"""
         element = self.element_is_visible(self.locators.CHANGE_ROWS_DROPDOWN)
@@ -269,7 +273,7 @@ class FilePage(BasePage):
         time.sleep(5)
         text = str(self.element_is_visible(self.locators.UPLOADED_RESULT).text)
         return file_name.split('\\')[-1], text.split('\\')[-1]
-
+    #TODO:Переделать на создание файла в temp директории
     def download_file(self):
         download_btn = self.element_is_visible(self.locators.DOWNLOAD_BUTTON)
         """Получаем ссылку на файл с кнопки скачивания"""
