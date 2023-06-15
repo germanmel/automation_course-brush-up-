@@ -21,7 +21,10 @@ class BasePage:
         self.driver.get(self.url)
 
     """Элемент виден на странице"""
+    # def element_is_visible(self, locator, timeout=5):
+    #     return wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
     def element_is_visible(self, locator, timeout=5):
+        self.go_to_element(self.element_is_present(locator))
         return wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
 
     """Элементы видны на странице"""
@@ -60,7 +63,21 @@ class BasePage:
         action.context_click(element)
         action.perform()
 
-    def switch_to_tab_by_index(self):
-        return self.driver.switch_to()
+    """Убрать футер со страницы"""
+    def remove_footer(self):
+        self.driver.execute_script("document.getElementsByTagName('footer')[0].remove();")
+        self.driver.execute_script("document.getElementsById('close-fixedban').remove();")
+
+    """Переключиться на окно по индексу"""
+    def switch_to_window(self, window_number):
+        self.driver.switch_to.window(self.driver.window_handles[window_number])
+
+    """Открывает новую пустую вкладку или новое окно и фокусируется на нём (не нужно явно указывать)"""
+    def open_new_clear_page(self, view=None):  # view can be "tab" or "window"
+        self.driver.switch_to.new_window(view)
+
+    """Переключиться на iframe"""
+    def switch_to_frame(self, element):
+        self.driver.switch_to.frame(element)
 
 

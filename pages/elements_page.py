@@ -1,11 +1,16 @@
+import base64
+import os
 import time
+
+import faker
 import requests
+from selenium.common import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 
-from generator.generator import generated_person
+from generator.generator import generated_person, generated_file, generated_file_tmp_directory
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxLocators, RadioButtonLocators, \
-    WebTableLocators, ButtonsPageLocators, LinkPageLocators
+    WebTableLocators, ButtonsPageLocators, LinkPageLocators, FilePageLocators, DynamicPropertiesPageLocators
 from pages.base_page import BasePage
 import random
 
@@ -167,6 +172,7 @@ class WebTablePage(BasePage):
         return self.element_is_present(self.locators.NO_ROWS_FOUND).text
 
     def select_up_to_some_rows(self):
+        self.remove_footer()
         count = []
         """Находим дропдаун"""
         element = self.element_is_visible(self.locators.CHANGE_ROWS_DROPDOWN)
@@ -241,4 +247,72 @@ class LinksPage(BasePage):
             self.element_is_present(locator).click()
         else:
             return request.status_code
+
+class FilePage(BasePage):
+
+    locators = FilePageLocators()
+
+    def upload_file(self):
+        """Генерируем файл, получаем путь и его имя"""
+        file_name, path = generated_file()
+        """Отправляем файл в инпут"""
+        self.element_is_visible(self.locators.UPLOAD_FILE).send_keys(path)
+        """Удаляем файл, для метода ниже с временной директорией не актуально"""
+        os.remove(path)
+        """Получаем путь отображаемый после загрузки файла, отсекаем всё кроме имени файла"""
+        text = str(self.element_is_visible(self.locators.UPLOADED_RESULT).text)
+        return file_name.split('\\')[-1], text.split('\\')[-1]
+
+    """Генерируем файл во временной директории, получаем путь и имя
+    tmp_path - фикстура которую нужно передать в тест"""
+    def upload_file_from_tmp_directory(self, tmp_path):
+        file_name, path = generated_file_tmp_directory(tmp_path)
+        print(file_name)
+        print(path)
+        self.element_is_visible(self.locators.UPLOAD_FILE).send_keys(f'{path}\{file_name}')
+        time.sleep(5)
+        text = str(self.element_is_visible(self.locators.UPLOADED_RESULT).text)
+        return file_name.split('\\')[-1], text.split('\\')[-1]
+    #TODO:Переделать на создание файла в temp директории
+    def download_file(self):
+        download_btn = self.element_is_visible(self.locators.DOWNLOAD_BUTTON)
+        """Получаем ссылку на файл с кнопки скачивания"""
+        link = download_btn.get_attribute('href')  # если юзать .split(',')
+        """Декодируем в байты"""
+        link_b = base64.b64decode(link)  # тогда можно указать link[1] и убрать offset ниже
+        path_name_file = rf'D:\_QA_study\automation_course_brush_up\testfile{random.randint(0, 999)}.jpg'
+        """В директории выше создаём двоичный файл для чтения и записи (wb+)"""
+        with open(path_name_file, 'wb+') as f:
+            """Отсекаем лишнее и записываем только байты файла"""
+            offset = link_b.find(b'\xff\xd8')
+            f.write(link_b[offset:])
+            """Проверяем что файл существует"""
+            check_file = os.path.exists(path_name_file)
+            f.close()
+        os.remove(path_name_file)  # удаляем файл
+        return check_file
+
+class DynamicPropertiesPage(BasePage):
+
+    locators = DynamicPropertiesPageLocators()
+
+    def check_changed_of_color(self):
+        color_button = self.element_is_present(self.locators.COLOR_CHANGE_BUTTON)
+        color_button_before = color_button.value_of_css_property('color')
+        self.element_is_clickable(self.locators.DISABLED_BUTTON)
+        color_button_after = color_button.value_of_css_property('color')
+        print(color_button_before)
+        print(color_button_after)
+        return color_button_before, color_button_after
+
+    def check_appear_of_button(self):
+        try:
+            self.element_is_visible(self.locators.VISIBLE_AFTER_5SEC_BUTTON)
+        except TimeoutException:
+            return False
+        return True
+
+
+
+
 

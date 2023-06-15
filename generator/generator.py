@@ -16,5 +16,26 @@ def generated_person():  # генератор данных
         salary=randint(15000, 150000),
         email=faker_ru.email(),
         current_adress=faker_ru.address(),
-        permanent_adress=faker_ru.address()
+        permanent_adress=faker_ru.address(),
+        mobile=faker_ru.msisdn(),
+
     )
+
+
+def generated_file():
+    path = rf'D:\_QA_study\automation_course_brush_up\testfile{randint(0, 999)}.txt'
+    file = open(path, 'w+')
+    file.write(f"Test text{randint(0, 999)}")
+    file.close()
+    return file.name, path
+
+
+"""Метод генерации во временной директории с передачей фикстуры tmp_path в тест"""
+
+
+def generated_file_tmp_directory(tmp_path):
+    path = tmp_path / "test_files"
+    path.mkdir()
+    file = path / f"testfile_{randint(0, 999)}.txt"
+    file.write_text(f"Test text_{randint(0, 999)}")
+    return file.name, path

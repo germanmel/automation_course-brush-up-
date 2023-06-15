@@ -1,6 +1,7 @@
 import time
 import pytest
-from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage
+from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage, \
+    FilePage, DynamicPropertiesPage
 from random import randint
 from locators.elements_page_locators import LinkPageLocators
 
@@ -200,3 +201,48 @@ class TestLinksPage:
         print(response_code)
         print(expected_code)
         assert response_code == expected_code, f"Response code: {response_code}, expected {expected_code}"
+
+class TestFilePage:
+    """Загрузка файла как сделано в курсе"""
+    def test_upload_file(self, driver):
+        file_page = FilePage(driver, 'https://demoqa.com/upload-download')
+        file_page.open()
+        file_name, text = file_page.upload_file()
+        assert file_name == text, f"File name on page: {text} differs from upload file name: {file_name}"
+
+    """Загрузка файла созданного во временной директории, самостоятельная работа"""
+    def test_upload_file_from_tmp(self, driver, tmp_path):
+        file_page = FilePage(driver, 'https://demoqa.com/upload-download')
+        file_page.open()
+        file_name, text = file_page.upload_file_from_tmp_directory(tmp_path)
+        assert file_name == text, f"File name on page: {text} differs from upload file name: {file_name}"
+
+
+
+    def test_download_file(self, driver):
+        file_page = FilePage(driver, 'https://demoqa.com/upload-download')
+        file_page.open()
+        check = file_page.download_file()
+        assert check is True, "The file hasn't been downloaded"
+
+@pytest.mark.xfail(reason="Failed due to too long loading page")
+class TestDynamicPropertiesPage: # Проверить тесты после решения проблемы с загрузкой страницы из-за рекламы
+
+    def test_change_button_color(self, driver):
+        dynamic_page = DynamicPropertiesPage(driver, 'https://demoqa.com/dynamic-properties')
+        dynamic_page.open()
+        color_before, color_after = dynamic_page.check_changed_of_color()
+        assert color_after != color_before, "Color of button hasn't been changed"
+
+    def test_appear_button(self,driver):
+        dynamic_page = DynamicPropertiesPage(driver, 'https://demoqa.com/dynamic-properties')
+        dynamic_page.open()
+        appear = dynamic_page.check_appear_of_button()
+        assert appear is True
+
+
+
+
+
+
+
