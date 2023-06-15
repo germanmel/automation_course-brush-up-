@@ -82,4 +82,32 @@ class TestAlerts:
             assert actual_parent_text == expected_parent_text, "Parent text is incorrect"
             assert actual_child_text == expected_child_text, "Child text is incorrect"
 
+    class TestModal:
+
+        def test_small_modal(self, driver):
+            modal_page = AlertsPage(driver, 'https://demoqa.com/modal-dialogs')
+            modal_page.open()
+            actual_title, actual_text = modal_page.check_small_modal()
+            expected_title = "Small Modal"
+            expected_text = "This is a small modal. It has very less content"
+            assert actual_title == expected_title
+            assert actual_text == expected_text
+
+        def test_large_modal(self, driver):
+            modal_page = AlertsPage(driver, 'https://demoqa.com/modal-dialogs')
+            modal_page.open()
+            actual_title, actual_text = modal_page.check_large_modal()
+            expected_title = "Large Modal"
+            expected_text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. " \
+                            "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, " \
+                            "when an unknown printer took a galley of type and scrambled it to make a type specimen " \
+                            "book. It has survived not only five centuries, but also the leap into electronic " \
+                            "typesetting, remaining essentially unchanged. It was popularised in the 1960s with the " \
+                            "release of Letraset sheets containing Lorem Ipsum passages, and more recently with " \
+                            "desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+            assert actual_title == expected_title
+            assert actual_text == expected_text
+
+
+
 
