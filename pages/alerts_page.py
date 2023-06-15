@@ -81,7 +81,19 @@ class AlertsPage(BasePage):
         child_text = self.element_is_present(self.locators.CHILD_TEXT).text
         return parent_text, child_text
 
+    def check_small_modal(self):
+        self.element_is_visible(self.locators.SMALL_MODAL_BUTTON).click()
+        title = self.element_is_present(self.locators.TITLE_SMALL_MODAL).text
+        text = self.element_is_present(self.locators.BODY_SMALL_MODAL).text
+        self.element_is_visible(self.locators.SMALL_MODAL_CLOSE_BUTTON).click()
+        return title, text
 
+    def check_large_modal(self):
+        self.element_is_visible(self.locators.LARGE_MODAL_BUTTON).click()
+        title = self.element_is_present(self.locators.TITLE_LARGE_MODAL).text
+        text = self.element_is_present(self.locators.BODY_LARGE_MODAL).text
+        self.element_is_visible(self.locators.LARGE_MODAL_CLOSE_BUTTON).click()
+        return title, text
 
 
 
