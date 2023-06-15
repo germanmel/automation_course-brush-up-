@@ -72,4 +72,8 @@ class BasePage:
     def switch_to_window(self, window_number):
         self.driver.switch_to.window(self.driver.window_handles[window_number])
 
+    """Открывает новую пустую вкладку или новое окно и фокусируется на нём (не нужно явно указывать)"""
+    def open_new_clear_page(self, view=None):  # view can be "tab" or "window"
+        self.driver.switch_to.new_window(view)
+
 

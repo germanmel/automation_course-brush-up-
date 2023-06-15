@@ -1,3 +1,6 @@
+import random
+import time
+
 from pages.base_page import BasePage
 from locators.alerts_page_locators import AlertPageLocators
 
@@ -20,4 +23,34 @@ class AlertsPage(BasePage):
         else:
             print("Error! button_type can be only Tab or Page")
 
+    def check_see_alert(self):
+        self.element_is_visible(self.locators.SEE_ALERT_BUTTON).click()
+        alert = self.driver.switch_to.alert
+        alert_text = alert.text
+        return alert_text
+
+    def check_alert_appear_5sec(self):
+            self.element_is_visible(self.locators.APPEAR_ALERT_AFTER_5SEC_BUTTON).click()
+            time.sleep(5)
+            alert = self.driver.switch_to.alert
+            alert_text = alert.text
+            return alert_text
+
+    def check_confirm_alert(self):
+        self.element_is_visible(self.locators.CONFIRM_BOX_ALERT_BUTTON).click()
+        """Переключаемся на алерт и подтверждаем его"""
+        alert = self.driver.switch_to.alert
+        alert.accept()
+        result_text = self.element_is_visible(self.locators.CONFIRM_ALERT_TEXT).text
+        return result_text
+
+    def check_promt_alert(self):
+        text = f"Test{random.randint(0,999)}"
+        self.element_is_visible(self.locators.PROMT_BOX_ALERT_BUTTON).click()
+        """Переключаемся на алерт, вводим текст и подтверждаем"""
+        alert = self.driver.switch_to.alert
+        alert.send_keys(text)
+        alert.accept()
+        result_text = self.element_is_visible(self.locators.PROMT_RESULT).text
+        return result_text, text
 
