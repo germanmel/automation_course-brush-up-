@@ -21,3 +21,8 @@ class AlertPageLocators:
     SECOND_FRAME = (By.CSS_SELECTOR, 'iframe[id="frame2"]')
     FRAME_TEXT = (By.CSS_SELECTOR, 'h1[id="sampleHeading"]')
 
+    # Nested frames
+    PARENT_FRAME = (By.CSS_SELECTOR, 'iframe[id="frame1"]')
+    PARENT_TEXT = (By.CSS_SELECTOR, 'body')
+    CHILD_FRAME = (By.CSS_SELECTOR, 'iframe[srcdoc="<p>Child Iframe</p>"]')
+    CHILD_TEXT = (By.CSS_SELECTOR, 'p')

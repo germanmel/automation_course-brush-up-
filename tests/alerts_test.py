@@ -60,6 +60,7 @@ class TestAlerts:
                                                        f"differs from expected text: {expected_text}"
 
     class TestFrames:
+
         def test_frames(self, driver):
             frame_page = AlertsPage(driver, "https://demoqa.com/frames")
             frame_page.open()
@@ -69,3 +70,16 @@ class TestAlerts:
             expected_result2 = ['This is a sample page', '100px', '100px']
             assert actual_result1 == expected_result1, "The frame1 doesn't exist or incorrect"
             assert actual_result2 == expected_result2, "The frame2 doesn't exist or incorrect"
+
+    class TestNestedFrames:
+
+        def test_nested_frames(self, driver):
+            nested_frame_page = AlertsPage(driver, "https://demoqa.com/nestedframes")
+            nested_frame_page.open()
+            actual_parent_text, actual_child_text = nested_frame_page.check_nested_frames()
+            expected_parent_text = "Parent frame"
+            expected_child_text = "Child Iframe"
+            assert actual_parent_text == expected_parent_text, "Parent text is incorrect"
+            assert actual_child_text == expected_child_text, "Child text is incorrect"
+
+

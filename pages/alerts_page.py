@@ -72,4 +72,16 @@ class AlertsPage(BasePage):
             text = self.element_is_present(self.locators.FRAME_TEXT).text
             return [text, width, height]
 
+    def check_nested_frames(self):
+        parent_frame = self.element_is_present(self.locators.PARENT_FRAME)
+        self.switch_to_frame(parent_frame)
+        parent_text = self.element_is_present(self.locators.PARENT_TEXT).text
+        child_frame = self.element_is_present(self.locators.CHILD_FRAME)
+        self.switch_to_frame(child_frame)
+        child_text = self.element_is_present(self.locators.CHILD_TEXT).text
+        return parent_text, child_text
+
+
+
+
 
