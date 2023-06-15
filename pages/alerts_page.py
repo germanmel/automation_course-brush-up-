@@ -54,3 +54,22 @@ class AlertsPage(BasePage):
         result_text = self.element_is_visible(self.locators.PROMT_RESULT).text
         return result_text, text
 
+    def check_frame(self, frame_num):
+        if frame_num == "frame1":
+            frame = self.element_is_present(self.locators.FIRST_FRAME)
+            width = frame.get_attribute('width')
+            height = frame.get_attribute('height')
+            self.switch_to_frame(frame)
+            text = self.element_is_present(self.locators.FRAME_TEXT).text
+            self.driver.switch_to.default_content()
+            return [text, width, height]
+
+        if frame_num == "frame2":
+            frame = self.element_is_present(self.locators.SECOND_FRAME)
+            width = frame.get_attribute('width')
+            height = frame.get_attribute('height')
+            self.switch_to_frame(frame)
+            text = self.element_is_present(self.locators.FRAME_TEXT).text
+            return [text, width, height]
+
+

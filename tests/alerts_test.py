@@ -59,3 +59,13 @@ class TestAlerts:
             assert actual_result_text.split(" ")[2] == expected_text, f"Text {actual_result_text} " \
                                                        f"differs from expected text: {expected_text}"
 
+    class TestFrames:
+        def test_frames(self, driver):
+            frame_page = AlertsPage(driver, "https://demoqa.com/frames")
+            frame_page.open()
+            actual_result1 = frame_page.check_frame('frame1')
+            expected_result1 = ['This is a sample page', '500px', '350px']
+            actual_result2 = frame_page.check_frame("frame2")
+            expected_result2 = ['This is a sample page', '100px', '100px']
+            assert actual_result1 == expected_result1, "The frame1 doesn't exist or incorrect"
+            assert actual_result2 == expected_result2, "The frame2 doesn't exist or incorrect"

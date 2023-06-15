@@ -76,4 +76,8 @@ class BasePage:
     def open_new_clear_page(self, view=None):  # view can be "tab" or "window"
         self.driver.switch_to.new_window(view)
 
+    """Переключиться на iframe"""
+    def switch_to_frame(self, element):
+        self.driver.switch_to.frame(element)
+
 
