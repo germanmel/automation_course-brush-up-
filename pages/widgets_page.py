@@ -29,6 +29,7 @@ class AccordianPage(BasePage):
 class AutoCompletePage(BasePage):
     locators = AutoCompletePageLocators()
 
+    """Добавляем все цвета из списка в инпут и возвращаем этот список"""
     def check_multi_input(self):
         input = self.element_is_visible(self.locators.MULTI_INPUT)
         colors = ["Red", "Yellow", "Green"]
@@ -37,12 +38,17 @@ class AutoCompletePage(BasePage):
             input.send_keys(Keys.RETURN)
         return colors
 
+    """Если в инпуте пустота - возвращаем False, иначе возвращаем список значений"""
     def get_actual_colors(self):
         input_values = self.elements_are_present(self.locators.MULTI_VALUE)
-        actual_colors = [i.text for i in input_values]
-        return actual_colors
+        if input_values != False:
+            actual_colors = [i.text for i in input_values]
+            return actual_colors
+        else:
+            return False
 
+    """Удаляем все значения из инпута"""
     def remove_colors(self):
         remove_btns = self.elements_are_visible(self.locators.REMOVE_VALUE)
-        for i in range(2):
-            remove_btns[i].click()
+        for btn in remove_btns:
+            btn.click()

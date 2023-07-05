@@ -4,9 +4,8 @@ from pages.widgets_page import AccordianPage, AutoCompletePage
 
 
 class TestWidgets:
-
     class TestAccordianPage:
-        #Тест страницы с аккордеоном
+        # Тест страницы с аккордеоном
         def test_accordian(self, driver):
             accordian_page = AccordianPage(driver, "https://demoqa.com/accordian")
             accordian_page.open()
@@ -34,6 +33,5 @@ class TestWidgets:
             autocomplete_page.open()
             autocomplete_page.check_multi_input()
             autocomplete_page.remove_colors()
-            count_after = len(autocomplete_page.get_actual_colors())
-            assert count_after == 1
-
+            actual_colors = autocomplete_page.get_actual_colors()
+            assert actual_colors is False, f"Colors aren't removed: {actual_colors}"
