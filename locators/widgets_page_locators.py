@@ -9,3 +9,9 @@ class AccordianPageLocators:
     SECTION_2_CONTENT = (By.CSS_SELECTOR, "#section2Content p")
     SECTION_3 = (By.CSS_SELECTOR, "#section3Heading")
     SECTION_3_CONTENT = (By.CSS_SELECTOR, "#section3Content p")
+
+class AutoCompletePageLocators:
+    MULTI_INPUT = (By.CSS_SELECTOR, 'input[id="autoCompleteMultipleInput"]')
+    SINGLE_INPUT = (By.CSS_SELECTOR, 'input[id="autoCompleteSingleInput"]')
+    MULTI_VALUE = (By.CSS_SELECTOR, ".auto-complete__multi-value__label")
+    REMOVE_VALUE = (By.CSS_SELECTOR, ".auto-complete__multi-value__remove")
