@@ -15,3 +15,4 @@ class AutoCompletePageLocators:
     SINGLE_INPUT = (By.CSS_SELECTOR, 'input[id="autoCompleteSingleInput"]')
     MULTI_VALUE = (By.CSS_SELECTOR, ".auto-complete__multi-value__label")
     REMOVE_VALUE = (By.CSS_SELECTOR, ".auto-complete__multi-value__remove")
+    REMOVE_ALL_VALUE = (By.CSS_SELECTOR, 'div[class*="auto-complete__indicator auto-complete__clear-indicator"]')

@@ -17,3 +17,7 @@ class Person:
     permanent_adress: str = None
     mobile: str = None
     birthday: int = None
+
+@dataclass()
+class Color:
+    color_name: list = None

@@ -47,8 +47,14 @@ class AutoCompletePage(BasePage):
         else:
             return False
 
-    """Удаляем все значения из инпута"""
+    """Удаляем все значения из инпута поочерёдно"""
     def remove_colors(self):
         remove_btns = self.elements_are_visible(self.locators.REMOVE_VALUE)
         for btn in remove_btns:
             btn.click()
+    """Удаляем все значения инпута по кнопке удалить все(крестик)"""
+    def remove_all_colors(self):
+        remove_all_btn = self.element_is_visible(self.locators.REMOVE_ALL_VALUE).click()
+
+    def fill_single_input(self):
+        pass

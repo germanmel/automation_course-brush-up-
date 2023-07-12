@@ -35,3 +35,11 @@ class TestWidgets:
             autocomplete_page.remove_colors()
             actual_colors = autocomplete_page.get_actual_colors()
             assert actual_colors is False, f"Colors aren't removed: {actual_colors}"
+
+        def test_remove_all_colors(self, driver):
+            autocomplete_page = AutoCompletePage(driver, "https://demoqa.com/auto-complete")
+            autocomplete_page.open()
+            autocomplete_page.check_multi_input()
+            autocomplete_page.remove_all_colors()
+            actual_colors = autocomplete_page.get_actual_colors()
+            assert actual_colors is False, f"Colors aren't removed: {actual_colors}"
