@@ -13,7 +13,7 @@ from selenium.common.exceptions import TimeoutException
 class BasePage:
     """Метод инициализирует аргументы при каждом вызове экземпляра класса"""
 
-    pytest.fixture()
+    #pytest.fixture()
     def __init__(self, driver, url):
         self.driver = driver
         self.url = url

@@ -2,8 +2,11 @@ import time
 
 from selenium.webdriver import Keys
 
+from generator.generator import generated_color
 from locators.widgets_page_locators import AccordianPageLocators, AutoCompletePageLocators
 from pages.base_page import BasePage
+import random
+
 
 
 class AccordianPage(BasePage):
@@ -32,7 +35,8 @@ class AutoCompletePage(BasePage):
     """Добавляем все цвета из списка в инпут и возвращаем этот список"""
     def check_multi_input(self):
         input = self.element_is_visible(self.locators.MULTI_INPUT)
-        colors = ["Red", "Yellow", "Green"]
+        """"random.sample выбирает случайные элементы в количестве k=x"""
+        colors = random.sample(next(generated_color()).color_name, k=6)
         for color in colors:
             input.send_keys(color)
             input.send_keys(Keys.RETURN)
@@ -57,4 +61,12 @@ class AutoCompletePage(BasePage):
         remove_all_btn = self.element_is_visible(self.locators.REMOVE_ALL_VALUE).click()
 
     def fill_single_input(self):
-        pass
+        color = random.sample(next(generated_color()).color_name, k=1)
+        input_single = self.element_is_clickable(self.locators.SINGLE_INPUT)
+        input_single.send_keys(color)
+        input_single.send_keys(Keys.ENTER)
+        return color[0]
+
+    def check_color_in_single(self):
+        color = self.element_is_visible(self.locators.SINGLE_INPUT_VALUE)
+        return color.text
