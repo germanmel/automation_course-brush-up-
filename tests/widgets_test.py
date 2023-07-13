@@ -15,9 +15,9 @@ class TestWidgets:
             first_expected_title = "What is Lorem Ipsum?"
             second_expected_title = "Where does it come from?"
             third_expected_title = "Why do we use it?"
-            assert first_title == first_expected_title and len(first_content) > 0
-            assert second_title == second_expected_title and len(second_content) > 0
-            assert third_title == third_expected_title and len(third_content) > 0
+            assert first_title == first_expected_title and len(first_content) > 0, "Incorrect title or missing text"
+            assert second_title == second_expected_title and len(second_content) > 0, "Incorrect title or missing text"
+            assert third_title == third_expected_title and len(third_content) > 0, "Incorrect title or missing text"
 
     class TestAutoCompletePage:
 
@@ -26,7 +26,8 @@ class TestWidgets:
             autocomplete_page.open()
             expected_colors = autocomplete_page.check_multi_input()
             actual_colors = autocomplete_page.get_actual_colors()
-            assert actual_colors == expected_colors, f"Actual colors {actual_colors} differ from entered colors {expected_colors}"
+            assert actual_colors == expected_colors, f"Actual colors {actual_colors} differ from entered colors " \
+                                                     f"{expected_colors}"
 
         def test_remove_colors(self, driver):
             autocomplete_page = AutoCompletePage(driver, "https://demoqa.com/auto-complete")
