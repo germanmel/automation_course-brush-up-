@@ -35,3 +35,15 @@ class DataPickerPageLocators:
     DATE_AND_TIME_NEXT_MONTH = (By.CSS_SELECTOR,
                                 'button[class*="react-datepicker__navigation--next"]')
 
+class SliderPageLocators:
+    SLIDER = (By.CSS_SELECTOR, 'input[class="range-slider range-slider--primary"]')
+    SLIDER_VALUE = (By.CSS_SELECTOR, '#sliderValue')
+
+class ProgressBarPageLocators:
+    PROGRESS_BAR = (By.CSS_SELECTOR, 'div[role="progressbar"]')
+    RESET_BTN = (By.CSS_SELECTOR, '#resetButton')
+    START_STOP_BTN = (By.CSS_SELECTOR, '#startStopButton')
+    RESET_BTN = (By.CSS_SELECTOR, '#resetButton')
+
+
+

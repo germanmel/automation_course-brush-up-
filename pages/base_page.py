@@ -46,8 +46,10 @@ class BasePage:
 
     """Элемент не виден на странице"""
     def element_is_not_visible(self, locator, timeout=5):
-        return wait(self.driver, timeout).until(EC.invisibility_of_element(locator))
-
+        try:
+            return wait(self.driver, timeout).until(EC.invisibility_of_element(locator))
+        except TimeoutException:
+            return False
     """Элемент кликабелен"""
     def element_is_clickable(self, locator, timeout=5):
         return wait(self.driver, timeout).until(EC.element_to_be_clickable(locator))
@@ -84,6 +86,10 @@ class BasePage:
     """Переключиться на iframe"""
     def switch_to_frame(self, element):
         self.driver.switch_to.frame(element)
+
+    """Схватить и тянуть по оси координат"""
+    def drag_and_drop_by_offset(self, element, x_coord, y_coord):
+        ActionChains(self.driver).click_and_hold(element).move_by_offset(x_coord, y_coord).release().perform()
 
 
 

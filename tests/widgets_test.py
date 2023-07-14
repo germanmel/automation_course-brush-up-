@@ -1,6 +1,6 @@
 import time
 
-from pages.widgets_page import AccordianPage, AutoCompletePage, DataPickerPage
+from pages.widgets_page import AccordianPage, AutoCompletePage, DataPickerPage, SliderPage, ProgressBarPage
 
 
 class TestWidgets:
@@ -76,7 +76,37 @@ class TestDataPickerPage:
         timedate_after = picker_page.get_entered_timedate()
         assert timedate_before != timedate_after
 
+class TestSliderPage:
 
+    def test_slider(self, driver):
+        slider_page = SliderPage(driver, "https://demoqa.com/slider")
+        slider_page.open()
+        value_before, value_after = slider_page.drag_slider()
+        assert value_before != value_after, f"Slider location doesn't change, before{value_before} after{value_after}"
+
+
+class TestProgressBarPage:
+
+    def test_progress_bar_finish(self, driver):
+        progress_bar_page = ProgressBarPage(driver, 'https://demoqa.com/progress-bar')
+        progress_bar_page.open()
+        value, reset_btn = progress_bar_page.check_finish_progress_bar()
+        assert value == "100", "Progress bar isn't reached 100%"
+        assert reset_btn == "Reset", f"Unexpected reset button title {reset_btn}"
+
+
+    def test_start_stop_progress_bar(self, driver):
+        progress_bar_page = ProgressBarPage(driver, 'https://demoqa.com/progress-bar')
+        progress_bar_page.open()
+        stop_value, btn_text = progress_bar_page.check_start_stop_progress_bar()
+        assert int(stop_value) < 100, f"Progress bar reached 100%, stop value = {stop_value}"
+        assert btn_text == "Start", f"Expected button text 'Start' but actual {btn_text}"
+
+    def test_reset_progress_bar(self, driver):
+        progress_bar_page = ProgressBarPage(driver, 'https://demoqa.com/progress-bar')
+        progress_bar_page.open()
+        before_value, after_value = progress_bar_page.check_reset_btn()
+        assert before_value == "0" and after_value == "0"
 
 
 

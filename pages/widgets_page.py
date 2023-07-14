@@ -2,9 +2,11 @@ import time
 
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver import ActionChains
 
 from generator.generator import generated_color
-from locators.widgets_page_locators import AccordianPageLocators, AutoCompletePageLocators, DataPickerPageLocators
+from locators.widgets_page_locators import AccordianPageLocators, AutoCompletePageLocators, DataPickerPageLocators, \
+    SliderPageLocators, ProgressBarPageLocators
 from pages.base_page import BasePage
 import random
 
@@ -166,3 +168,63 @@ class DataPickerPage(BasePage):
         date_field = self.element_is_visible(self.locators.DATE_AND_TIME_INPUT)
         actual_date = date_field.get_attribute("value")
         return actual_date
+
+class SliderPage(BasePage):
+    locators = SliderPageLocators()
+
+    def drag_slider(self):
+        slider = self.element_is_visible(self.locators.SLIDER)
+        slider_value = self.element_is_visible(self.locators.SLIDER_VALUE)
+        slider_value_before = slider_value.get_attribute('value')
+        """Хватаем и тянем элемент по горизонтали"""
+        self.drag_and_drop_by_offset(slider, random.randint(10, 50), 0)
+        slider_value_after = slider_value.get_attribute('value')
+        return slider_value_before, slider_value_after
+
+class ProgressBarPage(BasePage):
+    locators = ProgressBarPageLocators()
+
+    def check_finish_progress_bar(self):
+        start_stop = self.element_is_clickable(self.locators.START_STOP_BTN).click()
+        progress_bar = self.element_is_present(self.locators.PROGRESS_BAR)
+        """Как только значение 100 перестаём проверять и завершаем"""
+        while True:
+            value = progress_bar.get_attribute('aria-valuenow')
+            if value == "100":
+                break
+            time.sleep(3)
+        reset_btn = self.element_is_visible(self.locators.RESET_BTN).text
+        return value, reset_btn
+
+    def check_start_stop_progress_bar(self):
+        progress_bar = self.element_is_present(self.locators.PROGRESS_BAR)
+        start_value = progress_bar.get_attribute('aria-valuenow')
+        start_stop = self.element_is_clickable(self.locators.START_STOP_BTN)
+        start_stop.click()
+        """Останавливаем на случайном значении от 10 до 60"""
+        while True:
+            stop_value = progress_bar.get_attribute('aria-valuenow')
+            if stop_value == f"{random.randint(10, 60)}":
+                start_stop.click()
+                break
+        btn_text = start_stop.text
+        return stop_value, btn_text
+
+    def check_reset_btn(self):
+        progress_bar = self.element_is_present(self.locators.PROGRESS_BAR)
+        start_value = progress_bar.get_attribute('aria-valuenow')
+        self.element_is_clickable(self.locators.START_STOP_BTN).click()
+        while True:
+            value = progress_bar.get_attribute('aria-valuenow')
+            if value == "100":
+                break
+        self.element_is_clickable(self.locators.RESET_BTN).click()
+        after_reset_value = progress_bar.get_attribute('aria-valuenow')
+        return start_value, after_reset_value
+
+
+
+
+
+
+
