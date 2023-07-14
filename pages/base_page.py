@@ -4,6 +4,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
+
 
 
 """Базовый класс страницы, который будем использовать везде"""
@@ -11,7 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 class BasePage:
     """Метод инициализирует аргументы при каждом вызове экземпляра класса"""
 
-    #@pytest.fixture()
+    #pytest.fixture()
     def __init__(self, driver, url):
         self.driver = driver
         self.url = url
@@ -37,7 +39,10 @@ class BasePage:
 
     """Элементы присутствуют в dom дереве"""
     def elements_are_present(self, locator, timeout=5):
-        return wait(self.driver, timeout).until(EC.presence_of_all_elements_located(locator))
+        try:
+            return wait(self.driver, timeout).until(EC.presence_of_all_elements_located(locator))
+        except TimeoutException:
+            return False
 
     """Элемент не виден на странице"""
     def element_is_not_visible(self, locator, timeout=5):
@@ -79,5 +84,11 @@ class BasePage:
     """Переключиться на iframe"""
     def switch_to_frame(self, element):
         self.driver.switch_to.frame(element)
+
+
+
+
+
+
 
 
