@@ -86,3 +86,9 @@ class BasePage:
         self.driver.switch_to.frame(element)
 
 
+
+
+
+
+
+

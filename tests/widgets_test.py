@@ -1,6 +1,6 @@
 import time
 
-from pages.widgets_page import AccordianPage, AutoCompletePage
+from pages.widgets_page import AccordianPage, AutoCompletePage, DataPickerPage
 
 
 class TestWidgets:
@@ -51,3 +51,33 @@ class TestWidgets:
             actual_color = autocomplete_page.fill_single_input()
             expected_color = autocomplete_page.check_color_in_single()
             assert actual_color == expected_color, f"Actual color {actual_color} differ from entered color {expected_color}"
+
+class TestDataPickerPage:
+
+    def test_change_date(self, driver):
+        picker_page = DataPickerPage(driver, "https://demoqa.com/date-picker")
+        picker_page.open()
+        month = picker_page.fill_random_month()
+        year = picker_page.fill_random_year()
+        day = picker_page.fill_random_day()
+        actual_date = picker_page.get_entered_date()
+        expected_date = f"{month}/{day}/{year}"
+        assert actual_date == expected_date, f"Date {actual_date} differs from expected date {expected_date}"
+
+
+    def test_change_date_and_time(self, driver):
+        picker_page = DataPickerPage(driver, "https://demoqa.com/date-picker")
+        picker_page.open()
+        timedate_before = picker_page.get_entered_timedate()
+        picker_page.fill_datetime_month()
+        picker_page.fill_datetime_year()
+        picker_page.fill_datetime_day()
+        picker_page.fill_datetime_time()
+        timedate_after = picker_page.get_entered_timedate()
+        assert timedate_before != timedate_after
+
+
+
+
+
+
