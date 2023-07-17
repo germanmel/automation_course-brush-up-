@@ -45,5 +45,12 @@ class ProgressBarPageLocators:
     START_STOP_BTN = (By.CSS_SELECTOR, '#startStopButton')
     RESET_BTN = (By.CSS_SELECTOR, '#resetButton')
 
+class TabsPageLocators:
+    NAV_TABS = (By.CSS_SELECTOR, '.nav-tabs')
+    """More некликабельна, поэтому её проверим отдельно"""
+    TABS_WITHOUT_MORE = (By.CSS_SELECTOR, 'a[role="tab"]:not(#demo-tab-more)')
+    TAB_CONTENT = (By.CSS_SELECTOR, '.tab-content')
+    MORE_TAB = (By.CSS_SELECTOR, '#demo-tab-more')
+
 
 

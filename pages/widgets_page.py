@@ -6,7 +6,7 @@ from selenium.webdriver import ActionChains
 
 from generator.generator import generated_color
 from locators.widgets_page_locators import AccordianPageLocators, AutoCompletePageLocators, DataPickerPageLocators, \
-    SliderPageLocators, ProgressBarPageLocators
+    SliderPageLocators, ProgressBarPageLocators, TabsPageLocators
 from pages.base_page import BasePage
 import random
 
@@ -222,9 +222,29 @@ class ProgressBarPage(BasePage):
         after_reset_value = progress_bar.get_attribute('aria-valuenow')
         return start_value, after_reset_value
 
+class TabsPage(BasePage):
+    locators = TabsPageLocators()
 
+    def check_tabs(self):
+        tabs_list = self.elements_are_visible(self.locators.NAV_TABS)
+        tabs_title = []
+        for tab in tabs_list:
+            tab.click()
+            tabs_title.append(tab.text.replace("\n", ","))
+        return tabs_title
 
+    def check_tabs_content(self):
+        tabs_list = self.elements_are_visible(self.locators.TABS_WITHOUT_MORE)
+        length_content = []
+        for tab in tabs_list:
+            tab.click()
+            content = self.element_is_visible(self.locators.TAB_CONTENT)
+            length_content.append(len(content.text))
+        return length_content
 
-
-
-
+    def check_more_tab(self):
+        more_tab = self.element_is_visible(self.locators.MORE_TAB)
+        more_tab.click()
+        content = self.element_is_visible(self.locators.TAB_CONTENT)
+        length_content = len(content.text)
+        return length_content

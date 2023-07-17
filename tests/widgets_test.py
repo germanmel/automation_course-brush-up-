@@ -1,6 +1,7 @@
 import time
+import pytest
 
-from pages.widgets_page import AccordianPage, AutoCompletePage, DataPickerPage, SliderPage, ProgressBarPage
+from pages.widgets_page import AccordianPage, AutoCompletePage, DataPickerPage, SliderPage, ProgressBarPage, TabsPage
 
 
 class TestWidgets:
@@ -108,6 +109,30 @@ class TestProgressBarPage:
         before_value, after_value = progress_bar_page.check_reset_btn()
         assert before_value == "0" and after_value == "0"
 
+class TestTabsPage:
 
+    def test_tabs(self, driver):
+        tab_page = TabsPage(driver, 'https://demoqa.com/tabs')
+        tab_page.open()
+        actual_tabs_title = tab_page.check_tabs()
+        expected_tabs_title = ['What,Origin,Use,More']
+        assert actual_tabs_title == expected_tabs_title, f"Unexpected tab titles {actual_tabs_title}"
+
+    def test_tabs_content(self, driver):
+        tab_page = TabsPage(driver, 'https://demoqa.com/tabs')
+        tab_page.open()
+        actual_length = tab_page.check_tabs_content()
+        expected_length = [574, 1059, 613]
+        assert actual_length == expected_length, \
+            f"Expected length of content {expected_length} differs from actual {actual_length}"
+
+    @pytest.mark.xfail(reason="Tab is unclickable, task 21324")
+    def test_more_tab(self, driver):
+        tab_page = TabsPage(driver, 'https://demoqa.com/tabs')
+        tab_page.open()
+        actual_length = tab_page.check_more_tab()
+        expected_length = 145
+        assert actual_length == expected_length, \
+            f"Expected length of content {expected_length} differs from actual {actual_length}"
 
 
