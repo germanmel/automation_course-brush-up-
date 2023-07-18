@@ -1,7 +1,8 @@
 import time
 import pytest
 
-from pages.widgets_page import AccordianPage, AutoCompletePage, DataPickerPage, SliderPage, ProgressBarPage, TabsPage
+from pages.widgets_page import AccordianPage, AutoCompletePage, DataPickerPage, SliderPage, ProgressBarPage, TabsPage, \
+    ToolTipsPage
 
 
 class TestWidgets:
@@ -136,3 +137,13 @@ class TestTabsPage:
             f"Expected length of content {expected_length} differs from actual {actual_length}"
 
 
+class TestToolTipsPage:
+
+    def test_tooltips(self, driver):
+        tooltips_page = ToolTipsPage(driver, 'https://demoqa.com/tool-tips')
+        tooltips_page.open()
+        tooltip_text_button, tooltip_text_field, tooltip_text_contrary, tooltip_text_section = tooltips_page.check_tooltips()
+        assert tooltip_text_button == 'You hovered over the Button', "Unexpected button tooltip text"
+        assert tooltip_text_field == 'You hovered over the text field', "Unexpected field tooltip text"
+        assert tooltip_text_contrary == 'You hovered over the Contrary', "Unexpected contrary link tooltip text"
+        assert tooltip_text_section == 'You hovered over the 1.10.32', "Unexpected section link tooltip text"

@@ -58,6 +58,12 @@ class BasePage:
     def go_to_element(self, element):
         return self.driver.execute_script("arguments[0].scrollIntoView();", element)
 
+    """Перемещение мыши к элементу"""
+    def move_to_element(self, element):
+        action = ActionChains(self.driver)
+        action.move_to_element(element)
+        action.perform()
+
     """Двойной клик по элементу"""
     def double_click(self, element):
         action = ActionChains(self.driver)

@@ -52,5 +52,16 @@ class TabsPageLocators:
     TAB_CONTENT = (By.CSS_SELECTOR, '.tab-content')
     MORE_TAB = (By.CSS_SELECTOR, '#demo-tab-more')
 
+class ToolTipsPageLocators:
+    BUTTON = (By.CSS_SELECTOR, '#toolTipButton')
+    HOVERED_BUTTON = (By.CSS_SELECTOR, 'button[aria-describedby="buttonToolTip"]')
+    FIELD = (By.CSS_SELECTOR, '#texFieldToolTopContainer input')
+    HOVERED_FIELD = (By.CSS_SELECTOR, 'input[aria-describedby="textFieldToolTip"]')
+    CONTRARY_LINK = (By.XPATH, '//*[text()="Contrary"]')
+    HOVERED_CONTRARY_LINK = (By.CSS_SELECTOR, 'a[aria-describedby="contraryTexToolTip"]')
+    SECTION_LINK = (By.XPATH, '//*[text()="1.10.32"]')
+    HOVERED_SECTION_LINK = (By.CSS_SELECTOR, 'a[aria-describedby="sectionToolTip"]')
+    TOOLTIPS = (By.CSS_SELECTOR, '.tooltip-inner')
+
 
 
