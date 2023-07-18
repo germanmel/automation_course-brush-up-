@@ -3,6 +3,7 @@ import pytest
 
 from pages.widgets_page import AccordianPage, AutoCompletePage, DataPickerPage, SliderPage, ProgressBarPage, TabsPage, \
     ToolTipsPage
+from locators.widgets_page_locators import ToolTipsPageLocators
 
 
 class TestWidgets:
@@ -138,12 +139,34 @@ class TestTabsPage:
 
 
 class TestToolTipsPage:
+    locators = ToolTipsPageLocators()
 
-    def test_tooltips(self, driver):
+    elements = {
+        "button": {
+            "locator": locators.BUTTON,
+            "expected_text": 'You hovered over the Button',
+        },
+        "field": {
+            "locator": locators.FIELD,
+            "expected_text": 'You hovered over the text field',
+        },
+        "contrary": {
+            "locator": locators.CONTRARY_LINK,
+            "expected_text": 'You hovered over the Contrary',
+        },
+        "section": {
+            "locator": locators.SECTION_LINK,
+            "expected_text": 'You hovered over the 1.10.32',
+        }
+    }
+
+    @pytest.mark.parametrize("element", elements.values(), ids=elements.keys())
+    def test_tooltips(self, driver, element):
         tooltips_page = ToolTipsPage(driver, 'https://demoqa.com/tool-tips')
         tooltips_page.open()
-        tooltip_text_button, tooltip_text_field, tooltip_text_contrary, tooltip_text_section = tooltips_page.check_tooltips()
-        assert tooltip_text_button == 'You hovered over the Button', "Unexpected button tooltip text"
-        assert tooltip_text_field == 'You hovered over the text field', "Unexpected field tooltip text"
-        assert tooltip_text_contrary == 'You hovered over the Contrary', "Unexpected contrary link tooltip text"
-        assert tooltip_text_section == 'You hovered over the 1.10.32', "Unexpected section link tooltip text"
+        tooltip_text = tooltips_page.check_tooltip(element['locator'])
+        expected_text = element['expected_text']
+        assert tooltip_text == expected_text, \
+            f"Unexpected tooltip text: {tooltip_text}, but it was expected: {expected_text}"
+
+

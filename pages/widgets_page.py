@@ -255,21 +255,8 @@ class TabsPage(BasePage):
 class ToolTipsPage(BasePage):
     locators = ToolTipsPageLocators()
 
-    """Наводим мышкой на элемент, проверяем что появились атрибуты наведённого элемента wait_element, получаем текст"""
-    def get_tooltips_text(self, hover_element, wait_element):
-        element = self.element_is_present(hover_element)
+    def check_tooltip(self, element):
+        element = self.element_is_present(element)
         self.move_to_element(element)
-        self.element_is_visible(wait_element)
         tooltip_text = self.element_is_visible(self.locators.TOOLTIPS).text
-        time.sleep(0.3)
         return tooltip_text
-
-    """Проверяем все нужные элементы и возвращаем их текст """
-    def check_tooltips(self):
-        tooltip_text_button = self.get_tooltips_text(self.locators.BUTTON, self.locators.HOVERED_BUTTON)
-        tooltip_text_field = self.get_tooltips_text(self.locators.FIELD, self.locators.HOVERED_FIELD)
-        tooltip_text_contrary = self.get_tooltips_text(self.locators.CONTRARY_LINK, self.locators.HOVERED_CONTRARY_LINK)
-        tooltip_text_section = self.get_tooltips_text(self.locators.SECTION_LINK, self.locators.HOVERED_SECTION_LINK)
-        return tooltip_text_button, tooltip_text_field, tooltip_text_contrary, tooltip_text_section
-
-
