@@ -6,7 +6,8 @@ from selenium.webdriver import ActionChains
 
 from generator.generator import generated_color
 from locators.widgets_page_locators import AccordianPageLocators, AutoCompletePageLocators, DataPickerPageLocators, \
-    SliderPageLocators, ProgressBarPageLocators, TabsPageLocators, ToolTipsPageLocators, MenuPageLocators
+    SliderPageLocators, ProgressBarPageLocators, TabsPageLocators, ToolTipsPageLocators, MenuPageLocators, \
+    SelectMenuPageLocators
 from pages.base_page import BasePage
 import random
 
@@ -271,4 +272,7 @@ class MenuPage(BasePage):
             self.move_to_element(menu_btn)
             data.append(menu_btn.text)
         return data
+#TODO - доделать
+class SelectMenuPage(BasePage):
+    locators = SelectMenuPageLocators()
 

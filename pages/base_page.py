@@ -95,7 +95,17 @@ class BasePage:
 
     """Схватить и тянуть по оси координат"""
     def drag_and_drop_by_offset(self, element, x_coord, y_coord):
-        ActionChains(self.driver).click_and_hold(element).move_by_offset(x_coord, y_coord).release().perform()
+        action = ActionChains(self.driver)
+        action.drag_and_drop_by_offset(element, x_coord, y_coord)
+        action.perform()
+
+    """Схватить и тянуть к элементу"""
+    def drag_and_drop_to_element(self, what_element, where_element):
+        action = ActionChains(self.driver)
+        action.drag_and_drop(what_element, where_element)
+        action.perform()
+
+
 
 
 
