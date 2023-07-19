@@ -6,7 +6,7 @@ from selenium.webdriver import ActionChains
 
 from generator.generator import generated_color
 from locators.widgets_page_locators import AccordianPageLocators, AutoCompletePageLocators, DataPickerPageLocators, \
-    SliderPageLocators, ProgressBarPageLocators, TabsPageLocators, ToolTipsPageLocators
+    SliderPageLocators, ProgressBarPageLocators, TabsPageLocators, ToolTipsPageLocators, MenuPageLocators
 from pages.base_page import BasePage
 import random
 
@@ -260,3 +260,15 @@ class ToolTipsPage(BasePage):
         self.move_to_element(element)
         tooltip_text = self.element_is_visible(self.locators.TOOLTIPS).text
         return tooltip_text
+
+class MenuPage(BasePage):
+    locators = MenuPageLocators()
+
+    def check_menu(self):
+        menu_list = self.elements_are_present(self.locators.MENU_ITEMS_LIST)
+        data = []
+        for menu_btn in menu_list:
+            self.move_to_element(menu_btn)
+            data.append(menu_btn.text)
+        return data
+

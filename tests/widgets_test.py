@@ -2,7 +2,7 @@ import time
 import pytest
 
 from pages.widgets_page import AccordianPage, AutoCompletePage, DataPickerPage, SliderPage, ProgressBarPage, TabsPage, \
-    ToolTipsPage
+    ToolTipsPage, MenuPage
 from locators.widgets_page_locators import ToolTipsPageLocators
 
 
@@ -169,4 +169,13 @@ class TestToolTipsPage:
         assert tooltip_text == expected_text, \
             f"Unexpected tooltip text: {tooltip_text}, but it was expected: {expected_text}"
 
+class TestMenuPage:
+
+    def test_menu(self, driver):
+        menu_page = MenuPage(driver, 'https://demoqa.com/menu')
+        menu_page.open()
+        btns_text = menu_page.check_menu()
+        expected_text = ['Main Item 1', 'Main Item 2', 'Sub Item', 'Sub Item',
+                         'SUB SUB LIST »', 'Sub Sub Item 1', 'Sub Sub Item 2', 'Main Item 3']
+        assert btns_text == expected_text, f"Menu title list: {btns_text} differs from expected: {expected_text}"
 
