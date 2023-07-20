@@ -1,10 +1,10 @@
-from pages.interactions_page import SortablePage
-from locators.interactions_page_locators import SortablePageLocators
+from pages.interactions_page import SortablePage, SelectablePage
+from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators
 import pytest
 
 class TestInteractions:
 
-    class TestSortablePage():
+    class TestSortablePage:
         locators = SortablePageLocators
 
         test_data = {
@@ -36,4 +36,30 @@ class TestInteractions:
             assert order_after == data["expected_list"], \
                 f"Unexpected order of items {order_after}"
 
+    class TestSelectablePage:
+        locators = SelectablePageLocators()
 
+        test_data = {
+            "list": {
+                "tab": locators.TAB_LIST,
+                "items": locators.LIST_ITEMS,
+                "selected": locators.ACTIVE_LIST_ITEMS
+            },
+            "grid": {
+                "tab": locators.TAB_GRID,
+                "items": locators.GRID_ITEMS,
+                "selected": locators.ACTIVE_LIST_GRID
+            }
+        }
+
+        @pytest.mark.parametrize("data", test_data.values(), ids=test_data.keys())
+        def test_selectable_random(self,driver, data):
+            selectable_page = SelectablePage(driver, 'https://demoqa.com/selectable')
+            selectable_page.open()
+            items_for_select, selected_items = selectable_page.select_random_items(data["tab"], data["items"],
+                                                                                   data["selected"])
+            """Создаём неупорядоченные множества на основе списков"""
+            items = set(items_for_select)
+            selected = set(selected_items)
+            """Сравниваем, 2 множества равны, если содержат одинаковые элементы"""
+            assert items == selected, f"Clicked items: {items} and selected items {selected} are different"
