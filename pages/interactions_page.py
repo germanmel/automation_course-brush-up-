@@ -42,3 +42,6 @@ class SelectablePage(BasePage):
         selected_items = self.elements_are_visible(selected)
         selected_names = [item.text for item in selected_items]
         return items_for_select, selected_names
+
+class ResizablePage(BasePage):
+    locators = ResizablePageLocators()
