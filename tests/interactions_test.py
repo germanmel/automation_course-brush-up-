@@ -1,5 +1,5 @@
-from pages.interactions_page import SortablePage, SelectablePage
-from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators
+from pages.interactions_page import SortablePage, SelectablePage, ResizablePage
+from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators, ResizablePageLocators
 import pytest
 
 class TestInteractions:
@@ -63,3 +63,21 @@ class TestInteractions:
             selected = set(selected_items)
             """Сравниваем, 2 множества равны, если содержат одинаковые элементы"""
             assert items == selected, f"Clicked items: {items} and selected items {selected} are different"
+
+    class TestResizablePage:
+
+        def test_resizable_box(self, driver):
+            resizable_page = ResizablePage(driver, 'https://demoqa.com/resizable')
+            resizable_page.open()
+            default_size, min_size,  max_size = resizable_page.change_resizable_box_size()
+            assert default_size == {'height': 200, 'width': 200}, f"Size {default_size} different from expected default"
+            assert min_size == {'height': 150, 'width': 150}, f"Size {min_size} different from expected min size"
+            assert max_size == {'height': 300, 'width': 500}, f"Size {max_size} different from expected max size"
+
+        def test_resizable(self, driver):
+            resizable_page = ResizablePage(driver, 'https://demoqa.com/resizable')
+            resizable_page.open()
+            default_size, min_size,  max_size = resizable_page.change_resizable_size()
+            assert default_size == {'height': 200, 'width': 200}, f"Size {default_size} different from expected default"
+            assert min_size == {'height': 20, 'width': 20}, f"Size {min_size} different from expected min size"
+            assert max_size == {'height': 520, 'width': 520}, f"Size {max_size} different from expected max size"
