@@ -1,5 +1,6 @@
-from pages.interactions_page import SortablePage, SelectablePage, ResizablePage
-from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators, ResizablePageLocators
+from pages.interactions_page import SortablePage, SelectablePage, ResizablePage, DroppablePage
+from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators, ResizablePageLocators, \
+    DroppablePageLocators
 import pytest
 
 class TestInteractions:
@@ -81,3 +82,32 @@ class TestInteractions:
             assert default_size == {'height': 200, 'width': 200}, f"Size {default_size} different from expected default"
             assert min_size == {'height': 20, 'width': 20}, f"Size {min_size} different from expected min size"
             assert max_size == {'height': 520, 'width': 520}, f"Size {max_size} different from expected max size"
+
+    class TestDroppablePage:
+        class TestSimple:
+            def test_drag_simple(self, driver):
+                simple_page = DroppablePage(driver, 'https://demoqa.com/droppable')
+                simple_page.open()
+                text_before, text_after = simple_page.drag_simple()
+                assert text_before == "Drop here", "Incorrect text before drag action"
+                assert text_after == "Dropped!", "Incorrect text after drag action"
+
+        class TestAccept:
+            locators = DroppablePageLocators()
+            data = {
+                "acceptable": {
+                    "locator":locators.ACCEPTABLE,
+                    "expected_text": "Dropped!"
+                },
+                "not_acceptable": {
+                    "locator": locators.NOT_ACCEPTABLE,
+                    "expected_text": "Drop here"
+                }
+            }
+            @pytest.mark.parametrize("data", data.values(), ids=data.keys())
+            def test_drag_accept(self, driver, data):
+                accept_page = DroppablePage(driver, 'https://demoqa.com/droppable')
+                accept_page.open()
+                text_before, text_after = accept_page.drag_accept(data["locator"])
+                assert text_before == "Drop here", "Incorrect text before drag action"
+                assert text_after == data["expected_text"], "Incorrect text after drag action"

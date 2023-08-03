@@ -19,3 +19,23 @@ class ResizablePageLocators:
     RESIZABLE_BOX = (By.CSS_SELECTOR, '#resizableBoxWithRestriction')
     RESIZABLE_HANDLE = (By.CSS_SELECTOR, '#resizable span[class*="react-resizable-handle"]')
     RESIZABLE = (By.CSS_SELECTOR, '#resizable')
+
+class DroppablePageLocators:
+    #Simple
+    SIMPLE_TAB = (By.CSS_SELECTOR, '#droppableExample-tab-simple')
+    SIMPLE_DRAG = (By.CSS_SELECTOR, '#draggable')
+    SIMPLE_DROP = (By.CSS_SELECTOR, '#simpleDropContainer #droppable')
+
+    #Accept
+    ACCEPT_TAB = (By.CSS_SELECTOR, '#droppableExample-tab-accept')
+    ACCEPTABLE = (By.CSS_SELECTOR, '#acceptable')
+    NOT_ACCEPTABLE = (By.CSS_SELECTOR, '#notAcceptable')
+    ACCEPT_DROP = (By.CSS_SELECTOR, '#acceptDropContainer #droppable')
+
+    #Prevent Propogation
+    PREVENT_PROPOGATION_TAB = (By.CSS_SELECTOR, '#droppableExample-tab-preventPropogation')
+    PREVENT_DRAG = (By.CSS_SELECTOR, '#dragBox')
+
+
+    #Revert Draggable
+    REVERT_DRAGGABLE_TAB = (By.CSS_SELECTOR, '#droppableExample-tab-revertable')

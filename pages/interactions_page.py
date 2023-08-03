@@ -1,5 +1,6 @@
 import random, time
-from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators, ResizablePageLocators
+from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators, ResizablePageLocators, \
+    DroppablePageLocators
 from pages.base_page import BasePage
 
 
@@ -70,4 +71,27 @@ class ResizablePage(BasePage):
         self.drag_and_drop_by_offset(handle, 500, 500)
         max_size = self.get_size(self.locators.RESIZABLE)
         return default_size, min_size, max_size
+
+class DroppablePage(BasePage):
+    locators = DroppablePageLocators()
+
+    def drag_simple(self):
+        self.element_is_visible(self.locators.SIMPLE_TAB).click()
+        drag_div = self.element_is_visible(self.locators.SIMPLE_DRAG)
+        drop_div = self.element_is_visible(self.locators.SIMPLE_DROP)
+        text_before = drop_div.text
+        self.drag_and_drop_to_element(drag_div, drop_div)
+        text_after = drop_div.text
+        return text_before, text_after
+
+    def drag_accept(self, drag_locator):
+        self.element_is_visible(self.locators.ACCEPT_TAB).click()
+        drag_div = self.element_is_visible(drag_locator)
+        drop_div = self.element_is_visible(self.locators.ACCEPT_DROP)
+        text_before = drop_div.text
+        self.drag_and_drop_to_element(drag_div, drop_div)
+        text_after = drop_div.text
+        return text_before, text_after
+
+
 
