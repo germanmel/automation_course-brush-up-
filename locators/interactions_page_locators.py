@@ -35,6 +35,12 @@ class DroppablePageLocators:
     #Prevent Propogation
     PREVENT_PROPOGATION_TAB = (By.CSS_SELECTOR, '#droppableExample-tab-preventPropogation')
     PREVENT_DRAG = (By.CSS_SELECTOR, '#dragBox')
+    PREVENT_NOT_GREEDY_OUTER = (By.CSS_SELECTOR, 'div[id="notGreedyDropBox"] p:nth-child(1)')
+    PREVENT_NOT_GREEDY_INNER = (By.CSS_SELECTOR, '#notGreedyInnerDropBox')
+    PREVENT_GREEDY_OUTER = (By.CSS_SELECTOR, 'div[id="greedyDropBox"] p:nth-child(1)')
+    PREVENT_GREEDY_INNER = (By.CSS_SELECTOR, '#greedyDropBoxInner')
+
+
 
 
     #Revert Draggable

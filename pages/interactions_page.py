@@ -94,4 +94,20 @@ class DroppablePage(BasePage):
         return text_before, text_after
 
 
+    def drag_prevent_outers(self, drop_outer_locator, drop_inner_locator):
+        self.element_is_visible(self.locators.PREVENT_PROPOGATION_TAB).click()
+        drag_div = self.element_is_visible(self.locators.PREVENT_DRAG)
+        drop_div = self.element_is_visible(drop_outer_locator)
+        neighbor_div = self.element_is_visible(drop_inner_locator)
+        text_before = [drop_div.text, neighbor_div.text]
+        self.drag_and_drop_to_element(drag_div, drop_div)
+        text_after = [drop_div.text, neighbor_div.text]
+        return text_before, text_after
+
+
+
+
+
+
+
 

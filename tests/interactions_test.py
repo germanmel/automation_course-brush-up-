@@ -111,3 +111,26 @@ class TestInteractions:
                 text_before, text_after = accept_page.drag_accept(data["locator"])
                 assert text_before == "Drop here", "Incorrect text before drag action"
                 assert text_after == data["expected_text"], "Incorrect text after drag action"
+
+        class TestPrevent:
+            locators = DroppablePageLocators()
+            data = {
+                "outer_not_greedy": {
+                    "outer": locators.PREVENT_NOT_GREEDY_OUTER,
+                    "inner": locators.PREVENT_NOT_GREEDY_INNER,
+                    "expected_result": ['Dropped!', 'Inner droppable (not greedy)']
+                },
+                "outer_greedy": {
+                    "outer": locators.PREVENT_GREEDY_OUTER,
+                    "inner": locators.PREVENT_GREEDY_INNER,
+                    "expected_result": ['Dropped!', 'Inner droppable (greedy)']
+                }
+            }
+
+            @pytest.mark.parametrize("data", data.values(), ids=data.keys())
+            def test_prevent_drag_outers(self, driver, data):
+                prevent_page = DroppablePage(driver, 'https://demoqa.com/droppable')
+                prevent_page.open()
+                text_before, text_after = prevent_page.drag_prevent_outers(data["outer"], data["inner"])
+                print(text_before, text_after)
+
