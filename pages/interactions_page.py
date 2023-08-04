@@ -93,12 +93,14 @@ class DroppablePage(BasePage):
         text_after = drop_div.text
         return text_before, text_after
 
-
-    def drag_prevent_outers(self, drop_outer_locator, drop_inner_locator):
+    """Метод принимает локатор дива в который перетаскиваем элемент и локатор соседского дива для проверки правильного
+     изменения текста в обоих дивах контейнера, получаем текст до, перетягиваем, получаем текст после, сравниваем в 
+     тесте"""
+    def drag_prevent(self, drop_locator, neighbor_locator):
         self.element_is_visible(self.locators.PREVENT_PROPOGATION_TAB).click()
         drag_div = self.element_is_visible(self.locators.PREVENT_DRAG)
-        drop_div = self.element_is_visible(drop_outer_locator)
-        neighbor_div = self.element_is_visible(drop_inner_locator)
+        drop_div = self.element_is_visible(drop_locator)
+        neighbor_div = self.element_is_visible(neighbor_locator)
         text_before = [drop_div.text, neighbor_div.text]
         self.drag_and_drop_to_element(drag_div, drop_div)
         text_after = [drop_div.text, neighbor_div.text]

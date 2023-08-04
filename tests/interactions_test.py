@@ -116,14 +116,28 @@ class TestInteractions:
             locators = DroppablePageLocators()
             data = {
                 "outer_not_greedy": {
-                    "outer": locators.PREVENT_NOT_GREEDY_OUTER,
-                    "inner": locators.PREVENT_NOT_GREEDY_INNER,
-                    "expected_result": ['Dropped!', 'Inner droppable (not greedy)']
+                    "drop": locators.PREVENT_NOT_GREEDY_OUTER,
+                    "neighbor": locators.PREVENT_NOT_GREEDY_INNER,
+                    "expected_before": ['Outer droppable', 'Inner droppable (not greedy)'],
+                    "expected_after": ['Dropped!', 'Inner droppable (not greedy)']
                 },
                 "outer_greedy": {
-                    "outer": locators.PREVENT_GREEDY_OUTER,
-                    "inner": locators.PREVENT_GREEDY_INNER,
-                    "expected_result": ['Dropped!', 'Inner droppable (greedy)']
+                    "drop": locators.PREVENT_GREEDY_OUTER,
+                    "neighbor": locators.PREVENT_GREEDY_INNER,
+                    "expected_before": ['Outer droppable', 'Inner droppable (greedy)'],
+                    "expected_after": ['Dropped!', 'Inner droppable (greedy)']
+                },
+                "inner_not_greedy": {
+                    "drop": locators.PREVENT_NOT_GREEDY_INNER,
+                    "neighbor": locators.PREVENT_NOT_GREEDY_OUTER,
+                    "expected_before": ['Inner droppable (not greedy)', 'Outer droppable'],
+                    "expected_after": ['Dropped!', 'Dropped!']
+                },
+                "inner_greedy": {
+                    "drop": locators.PREVENT_GREEDY_INNER,
+                    "neighbor": locators.PREVENT_GREEDY_OUTER,
+                    "expected_before": ['Inner droppable (greedy)', 'Outer droppable'],
+                    "expected_after": ['Dropped!', 'Outer droppable']
                 }
             }
 
@@ -131,6 +145,7 @@ class TestInteractions:
             def test_prevent_drag_outers(self, driver, data):
                 prevent_page = DroppablePage(driver, 'https://demoqa.com/droppable')
                 prevent_page.open()
-                text_before, text_after = prevent_page.drag_prevent_outers(data["outer"], data["inner"])
-                print(text_before, text_after)
+                text_before, text_after = prevent_page.drag_prevent(data["drop"], data["neighbor"])
+                assert text_before == data["expected_before"], "Incorrect text before dragging"
+                assert text_after == data["expected_after"], "Incorrect text after dragging"
 
