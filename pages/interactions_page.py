@@ -3,7 +3,7 @@ from locators.interactions_page_locators import SortablePageLocators, Selectable
     DroppablePageLocators
 from pages.base_page import BasePage
 
-
+# Страница сортировки перетягиванием(пятнашки)
 class SortablePage(BasePage):
     locators = SortablePageLocators()
     """Получаем все элементы которые можно сортировать"""
@@ -31,6 +31,7 @@ class SortablePage(BasePage):
         order_after = self.get_sortable_items(items)
         return order_after
 
+# Страница множественного выбора
 class SelectablePage(BasePage):
     locators = SelectablePageLocators()
     """Получаем несколько рандомных элементов из списка, кликаем по ним, возвращаем кликнутые и активные для проверки"""
@@ -45,6 +46,7 @@ class SelectablePage(BasePage):
         selected_names = [item.text for item in selected_items]
         return items_for_select, selected_names
 
+# Страница изменения размера окон
 class ResizablePage(BasePage):
     locators = ResizablePageLocators()
     """Вспомогательный метод получения размера окна"""
@@ -72,6 +74,7 @@ class ResizablePage(BasePage):
         max_size = self.get_size(self.locators.RESIZABLE)
         return default_size, min_size, max_size
 
+# Страница drag&drop элементов
 class DroppablePage(BasePage):
     locators = DroppablePageLocators()
 
