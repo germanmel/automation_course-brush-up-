@@ -149,3 +149,22 @@ class TestInteractions:
                 assert text_before == data["expected_before"], "Incorrect text before dragging"
                 assert text_after == data["expected_after"], "Incorrect text after dragging"
 
+        class TestRevert:
+            def test_revertable(self, driver):
+                revert_page = DroppablePage(driver, 'https://demoqa.com/droppable')
+                revert_page.open()
+                text_before, location_before, text_after, location_after = revert_page.drag_revert()
+                assert text_before == "Drop here", "Incorrect text before dragging"
+                assert location_before != location_after and location_after == \
+                       "position: relative; left: 0px; top: 0px;"
+                assert text_after == "Dropped!"
+
+            def test_not_revertable(self, driver):
+                revert_page = DroppablePage(driver, 'https://demoqa.com/droppable')
+                revert_page.open()
+                text_before, location_before, text_after, location_after, location_leave = revert_page.drag_not_revert()
+                assert text_before == "Drop here", "Incorrect text before dragging"
+                assert location_before != location_after and location_after == \
+                       "position: relative; left: 314px; top: -17px;"
+                #дополнительно проверяем что элемент можно вытянуть из дива
+                assert location_leave != location_after, "Div didn't change location after dragging out of drop div"

@@ -40,8 +40,8 @@ class DroppablePageLocators:
     PREVENT_GREEDY_OUTER = (By.CSS_SELECTOR, 'div[id="greedyDropBox"] p:nth-child(1)')
     PREVENT_GREEDY_INNER = (By.CSS_SELECTOR, '#greedyDropBoxInner')
 
-
-
-
     #Revert Draggable
-    REVERT_DRAGGABLE_TAB = (By.CSS_SELECTOR, '#droppableExample-tab-revertable')
+    REVERT_TAB = (By.CSS_SELECTOR, '#droppableExample-tab-revertable')
+    REVERTABLE_DRAG = (By.CSS_SELECTOR, '#revertable')
+    NOT_REVERTABLE_DRAG = (By.CSS_SELECTOR, '#notRevertable')
+    REVERT_DROP = (By.CSS_SELECTOR, '#revertableDropContainer #droppable')

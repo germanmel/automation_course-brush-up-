@@ -2,6 +2,8 @@ import random, time
 from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators, ResizablePageLocators, \
     DroppablePageLocators
 from pages.base_page import BasePage
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 # Страница сортировки перетягиванием(пятнашки)
 class SortablePage(BasePage):
@@ -109,7 +111,34 @@ class DroppablePage(BasePage):
         text_after = [drop_div.text, neighbor_div.text]
         return text_before, text_after
 
+    def drag_revert(self):
+        self.element_is_visible(self.locators.REVERT_TAB).click()
+        drag_div = self.element_is_visible(self.locators.REVERTABLE_DRAG)
+        drop_div = self.element_is_visible(self.locators.REVERT_DROP)
+        text_before = drop_div.text
+        self.drag_and_drop_to_element(drag_div, drop_div)
+        location_before = drag_div.get_attribute("style")
+        text_after = drop_div.text
+        # Ждём и проверяем что элемент вернулся на место
+        WebDriverWait(self.driver, 2).until(EC.text_to_be_present_in_element_attribute(self.locators.REVERTABLE_DRAG,
+                                                                                    "style",
+                                                                       "position: relative; left: 0px; top: 0px;"))
+        location_after = drag_div.get_attribute("style")
+        return text_before, location_before, text_after, location_after
 
+    def drag_not_revert(self):
+        self.element_is_visible(self.locators.REVERT_TAB).click()
+        drag_div = self.element_is_visible(self.locators.NOT_REVERTABLE_DRAG)
+        drop_div = self.element_is_visible(self.locators.REVERT_DROP)
+        other_drag = self.element_is_visible(self.locators.REVERTABLE_DRAG)
+        text_before = drop_div.text
+        location_before = drag_div.get_attribute("style")
+        self.drag_and_drop_to_element(drag_div, drop_div)
+        text_after = drop_div.text
+        location_after = drag_div.get_attribute("style")
+        self.drag_and_drop_to_element(drag_div, other_drag)
+        location_leave_div = drag_div.get_attribute("style")
+        return text_before, location_before, text_after, location_after, location_leave_div
 
 
 
