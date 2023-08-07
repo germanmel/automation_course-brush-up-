@@ -1,8 +1,11 @@
 import random, time
-from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators, ResizablePageLocators
+from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators, ResizablePageLocators, \
+    DroppablePageLocators
 from pages.base_page import BasePage
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
-
+# Страница сортировки перетягиванием(пятнашки)
 class SortablePage(BasePage):
     locators = SortablePageLocators()
     """Получаем все элементы которые можно сортировать"""
@@ -30,6 +33,7 @@ class SortablePage(BasePage):
         order_after = self.get_sortable_items(items)
         return order_after
 
+# Страница множественного выбора
 class SelectablePage(BasePage):
     locators = SelectablePageLocators()
     """Получаем несколько рандомных элементов из списка, кликаем по ним, возвращаем кликнутые и активные для проверки"""
@@ -44,6 +48,7 @@ class SelectablePage(BasePage):
         selected_names = [item.text for item in selected_items]
         return items_for_select, selected_names
 
+# Страница изменения размера окон
 class ResizablePage(BasePage):
     locators = ResizablePageLocators()
     """Вспомогательный метод получения размера окна"""
@@ -70,4 +75,73 @@ class ResizablePage(BasePage):
         self.drag_and_drop_by_offset(handle, 500, 500)
         max_size = self.get_size(self.locators.RESIZABLE)
         return default_size, min_size, max_size
+
+# Страница drag&drop элементов
+class DroppablePage(BasePage):
+    locators = DroppablePageLocators()
+
+    def drag_simple(self):
+        self.element_is_visible(self.locators.SIMPLE_TAB).click()
+        drag_div = self.element_is_visible(self.locators.SIMPLE_DRAG)
+        drop_div = self.element_is_visible(self.locators.SIMPLE_DROP)
+        text_before = drop_div.text
+        self.drag_and_drop_to_element(drag_div, drop_div)
+        text_after = drop_div.text
+        return text_before, text_after
+
+    def drag_accept(self, drag_locator):
+        self.element_is_visible(self.locators.ACCEPT_TAB).click()
+        drag_div = self.element_is_visible(drag_locator)
+        drop_div = self.element_is_visible(self.locators.ACCEPT_DROP)
+        text_before = drop_div.text
+        self.drag_and_drop_to_element(drag_div, drop_div)
+        text_after = drop_div.text
+        return text_before, text_after
+
+    """Метод принимает локатор дива в который перетаскиваем элемент и локатор соседского дива для проверки правильного
+     изменения текста в обоих дивах контейнера, получаем текст до, перетягиваем, получаем текст после, сравниваем в 
+     тесте"""
+    def drag_prevent(self, drop_locator, neighbor_locator):
+        self.element_is_visible(self.locators.PREVENT_PROPOGATION_TAB).click()
+        drag_div = self.element_is_visible(self.locators.PREVENT_DRAG)
+        drop_div = self.element_is_visible(drop_locator)
+        neighbor_div = self.element_is_visible(neighbor_locator)
+        text_before = [drop_div.text, neighbor_div.text]
+        self.drag_and_drop_to_element(drag_div, drop_div)
+        text_after = [drop_div.text, neighbor_div.text]
+        return text_before, text_after
+
+    def drag_revert(self):
+        self.element_is_visible(self.locators.REVERT_TAB).click()
+        drag_div = self.element_is_visible(self.locators.REVERTABLE_DRAG)
+        drop_div = self.element_is_visible(self.locators.REVERT_DROP)
+        text_before = drop_div.text
+        self.drag_and_drop_to_element(drag_div, drop_div)
+        location_before = drag_div.get_attribute("style")
+        text_after = drop_div.text
+        # Ждём и проверяем что элемент вернулся на место
+        WebDriverWait(self.driver, 2).until(EC.text_to_be_present_in_element_attribute(self.locators.REVERTABLE_DRAG,
+                                                                                    "style",
+                                                                       "position: relative; left: 0px; top: 0px;"))
+        location_after = drag_div.get_attribute("style")
+        return text_before, location_before, text_after, location_after
+
+    def drag_not_revert(self):
+        self.element_is_visible(self.locators.REVERT_TAB).click()
+        drag_div = self.element_is_visible(self.locators.NOT_REVERTABLE_DRAG)
+        drop_div = self.element_is_visible(self.locators.REVERT_DROP)
+        other_drag = self.element_is_visible(self.locators.REVERTABLE_DRAG)
+        text_before = drop_div.text
+        location_before = drag_div.get_attribute("style")
+        self.drag_and_drop_to_element(drag_div, drop_div)
+        text_after = drop_div.text
+        location_after = drag_div.get_attribute("style")
+        self.drag_and_drop_to_element(drag_div, other_drag)
+        location_leave_div = drag_div.get_attribute("style")
+        return text_before, location_before, text_after, location_after, location_leave_div
+
+
+
+
+
 

@@ -1,5 +1,6 @@
-from pages.interactions_page import SortablePage, SelectablePage, ResizablePage
-from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators, ResizablePageLocators
+from pages.interactions_page import SortablePage, SelectablePage, ResizablePage, DroppablePage
+from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators, ResizablePageLocators, \
+    DroppablePageLocators
 import pytest
 
 class TestInteractions:
@@ -81,3 +82,89 @@ class TestInteractions:
             assert default_size == {'height': 200, 'width': 200}, f"Size {default_size} different from expected default"
             assert min_size == {'height': 20, 'width': 20}, f"Size {min_size} different from expected min size"
             assert max_size == {'height': 520, 'width': 520}, f"Size {max_size} different from expected max size"
+
+    class TestDroppablePage:
+        class TestSimple:
+            def test_drag_simple(self, driver):
+                simple_page = DroppablePage(driver, 'https://demoqa.com/droppable')
+                simple_page.open()
+                text_before, text_after = simple_page.drag_simple()
+                assert text_before == "Drop here", "Incorrect text before drag action"
+                assert text_after == "Dropped!", "Incorrect text after drag action"
+
+        class TestAccept:
+            locators = DroppablePageLocators()
+            data = {
+                "acceptable": {
+                    "locator":locators.ACCEPTABLE,
+                    "expected_text": "Dropped!"
+                },
+                "not_acceptable": {
+                    "locator": locators.NOT_ACCEPTABLE,
+                    "expected_text": "Drop here"
+                }
+            }
+            @pytest.mark.parametrize("data", data.values(), ids=data.keys())
+            def test_drag_accept(self, driver, data):
+                accept_page = DroppablePage(driver, 'https://demoqa.com/droppable')
+                accept_page.open()
+                text_before, text_after = accept_page.drag_accept(data["locator"])
+                assert text_before == "Drop here", "Incorrect text before drag action"
+                assert text_after == data["expected_text"], "Incorrect text after drag action"
+
+        class TestPrevent:
+            locators = DroppablePageLocators()
+            data = {
+                "outer_not_greedy": {
+                    "drop": locators.PREVENT_NOT_GREEDY_OUTER,
+                    "neighbor": locators.PREVENT_NOT_GREEDY_INNER,
+                    "expected_before": ['Outer droppable', 'Inner droppable (not greedy)'],
+                    "expected_after": ['Dropped!', 'Inner droppable (not greedy)']
+                },
+                "outer_greedy": {
+                    "drop": locators.PREVENT_GREEDY_OUTER,
+                    "neighbor": locators.PREVENT_GREEDY_INNER,
+                    "expected_before": ['Outer droppable', 'Inner droppable (greedy)'],
+                    "expected_after": ['Dropped!', 'Inner droppable (greedy)']
+                },
+                "inner_not_greedy": {
+                    "drop": locators.PREVENT_NOT_GREEDY_INNER,
+                    "neighbor": locators.PREVENT_NOT_GREEDY_OUTER,
+                    "expected_before": ['Inner droppable (not greedy)', 'Outer droppable'],
+                    "expected_after": ['Dropped!', 'Dropped!']
+                },
+                "inner_greedy": {
+                    "drop": locators.PREVENT_GREEDY_INNER,
+                    "neighbor": locators.PREVENT_GREEDY_OUTER,
+                    "expected_before": ['Inner droppable (greedy)', 'Outer droppable'],
+                    "expected_after": ['Dropped!', 'Outer droppable']
+                }
+            }
+
+            @pytest.mark.parametrize("data", data.values(), ids=data.keys())
+            def test_prevent_drag_outers(self, driver, data):
+                prevent_page = DroppablePage(driver, 'https://demoqa.com/droppable')
+                prevent_page.open()
+                text_before, text_after = prevent_page.drag_prevent(data["drop"], data["neighbor"])
+                assert text_before == data["expected_before"], "Incorrect text before dragging"
+                assert text_after == data["expected_after"], "Incorrect text after dragging"
+
+        class TestRevert:
+            def test_revertable(self, driver):
+                revert_page = DroppablePage(driver, 'https://demoqa.com/droppable')
+                revert_page.open()
+                text_before, location_before, text_after, location_after = revert_page.drag_revert()
+                assert text_before == "Drop here", "Incorrect text before dragging"
+                assert location_before != location_after and location_after == \
+                       "position: relative; left: 0px; top: 0px;"
+                assert text_after == "Dropped!"
+
+            def test_not_revertable(self, driver):
+                revert_page = DroppablePage(driver, 'https://demoqa.com/droppable')
+                revert_page.open()
+                text_before, location_before, text_after, location_after, location_leave = revert_page.drag_not_revert()
+                assert text_before == "Drop here", "Incorrect text before dragging"
+                assert location_before != location_after and location_after == \
+                       "position: relative; left: 314px; top: -17px;"
+                #дополнительно проверяем что элемент можно вытянуть из дива
+                assert location_leave != location_after, "Div didn't change location after dragging out of drop div"
