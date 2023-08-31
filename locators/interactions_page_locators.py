@@ -45,3 +45,8 @@ class DroppablePageLocators:
     REVERTABLE_DRAG = (By.CSS_SELECTOR, '#revertable')
     NOT_REVERTABLE_DRAG = (By.CSS_SELECTOR, '#notRevertable')
     REVERT_DROP = (By.CSS_SELECTOR, '#revertableDropContainer #droppable')
+
+class DraggablePageLocators:
+    # Simple
+    SIMPLE_TAB = (By.CSS_SELECTOR, "#draggableExample-tab-simple")
+    DRAG_ME = (By.CSS_SELECTOR, "#dragBox")

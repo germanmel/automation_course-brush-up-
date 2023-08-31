@@ -1,4 +1,4 @@
-from pages.interactions_page import SortablePage, SelectablePage, ResizablePage, DroppablePage
+from pages.interactions_page import SortablePage, SelectablePage, ResizablePage, DroppablePage, DraggablePage
 from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators, ResizablePageLocators, \
     DroppablePageLocators
 import pytest
@@ -168,3 +168,14 @@ class TestInteractions:
                        "position: relative; left: 314px; top: -17px;"
                 #дополнительно проверяем что элемент можно вытянуть из дива
                 assert location_leave != location_after, "Div didn't change location after dragging out of drop div"
+
+    class TestDraggablePage:
+        class TestSimple:
+            def test_drag_element(self, driver):
+                simple_page = DraggablePage(driver, 'https://demoqa.com/dragabble')
+                simple_page.open()
+                location_before, location_after = simple_page.move_drag_element()
+                assert location_before == "position: relative; left: 50px; top: 50px;", "Unexpected location after " \
+                                                                                        "dragging"
+                assert location_after == "position: relative; left: 100px; top: 100px;", "Unexpected location after " \
+                                                                                        "dragging"
