@@ -158,11 +158,74 @@ class DroppablePage(BasePage):
 class DraggablePage(BasePage):
     locators = DraggablePageLocators()
 
-    def move_drag_element(self):
-        self.element_is_visible(self.locators.SIMPLE_TAB).click()
-        drag_div = self.element_is_visible(self.locators.DRAG_ME)
+    def move_drag_element(self, tab_locator, drag_locator):
+        self.element_is_visible(tab_locator).click()
+        drag_div = self.element_is_visible(drag_locator)
         self.drag_and_drop_by_offset(drag_div, 50, 50)
         location_before = drag_div.get_attribute("style")
         self.drag_and_drop_by_offset(drag_div, 50, 50)
         location_after = drag_div.get_attribute("style")
         return location_before, location_after
+
+    def drag_simple(self):
+        tab = self.locators.SIMPLE_TAB
+        drag = self.locators.DRAG_ME
+        location_before, location_after = self.move_drag_element(tab, drag)
+        return location_before, location_after
+
+    def drag_axis_x(self):
+        tab = self.locators.AXIS_RESTRICTED_TAB
+        drag = self.locators.X_ELEMENT
+        location_before, location_after = self.move_drag_element(tab, drag)
+        return location_before, location_after
+
+    def drag_axis_y(self):
+        tab = self.locators.AXIS_RESTRICTED_TAB
+        drag = self.locators.Y_ELEMENT
+        location_before, location_after = self.move_drag_element(tab, drag)
+        return location_before, location_after
+
+#TODO: Избавиться от дублирующего кода, напр. параметризацией
+    def drag_box_inside_container(self, size=None):
+        self.element_is_visible(self.locators.CONTAINER_RESTRICTED_TAB).click()
+        container = self.element_is_present(self.locators.CONTAINER_BOX_DIV)
+        drag_element = self.element_is_visible(self.locators.DRAG_BOX)
+        # начальные координаты элемента
+        start_x = drag_element.location['x']
+        start_y = drag_element.location['y']
+        # перемещаем элемент
+        self.drag_and_drop_by_offset(drag_element, 700, 700)
+        if size == "small":
+            self.change_window_size(1024, 768)
+        # конечные координаты элемента
+        end_x = drag_element.location['x']
+        end_y = drag_element.location['y']
+        # координаты и размер контейнера
+        container_x = container.location['x']
+        container_y = container.location['y']
+        container_width = container.size['width']
+        container_height = container.size['height']
+
+        return end_x, end_y, container_x, container_y, container_width, container_height
+
+    def drag_span_inside_container(self, size=None):
+        self.element_is_visible(self.locators.CONTAINER_RESTRICTED_TAB).click()
+        container = self.element_is_present(self.locators.CONTAINER_SPAN_DIV)
+        drag_element = self.element_is_visible(self.locators.DRAG_SPAN)
+        # начальные координаты элемента
+        start_x = drag_element.location['x']
+        start_y = drag_element.location['y']
+        # перемещаем элемент
+        self.drag_and_drop_by_offset(drag_element, 100, 100)
+        if size == "small":
+            self.change_window_size(1024, 768)
+        # конечные координаты элемента
+        end_x = drag_element.location['x']
+        end_y = drag_element.location['y']
+        # координаты и размер контейнера
+        container_x = container.location['x']
+        container_y = container.location['y']
+        container_width = container.size['width']
+        container_height = container.size['height']
+
+        return end_x, end_y, container_x, container_y, container_width, container_height

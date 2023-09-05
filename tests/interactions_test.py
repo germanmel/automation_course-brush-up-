@@ -3,8 +3,8 @@ from locators.interactions_page_locators import SortablePageLocators, Selectable
     DroppablePageLocators
 import pytest
 
-class TestInteractions:
 
+class TestInteractions:
     class TestSortablePage:
         locators = SortablePageLocators
 
@@ -54,7 +54,7 @@ class TestInteractions:
         }
 
         @pytest.mark.parametrize("data", test_data.values(), ids=test_data.keys())
-        def test_selectable_random(self,driver, data):
+        def test_selectable_random(self, driver, data):
             selectable_page = SelectablePage(driver, 'https://demoqa.com/selectable')
             selectable_page.open()
             items_for_select, selected_items = selectable_page.select_random_items(data["tab"], data["items"],
@@ -70,7 +70,7 @@ class TestInteractions:
         def test_resizable_box(self, driver):
             resizable_page = ResizablePage(driver, 'https://demoqa.com/resizable')
             resizable_page.open()
-            default_size, min_size,  max_size = resizable_page.change_resizable_box_size()
+            default_size, min_size, max_size = resizable_page.change_resizable_box_size()
             assert default_size == {'height': 200, 'width': 200}, f"Size {default_size} different from expected default"
             assert min_size == {'height': 150, 'width': 150}, f"Size {min_size} different from expected min size"
             assert max_size == {'height': 300, 'width': 500}, f"Size {max_size} different from expected max size"
@@ -78,7 +78,7 @@ class TestInteractions:
         def test_resizable(self, driver):
             resizable_page = ResizablePage(driver, 'https://demoqa.com/resizable')
             resizable_page.open()
-            default_size, min_size,  max_size = resizable_page.change_resizable_size()
+            default_size, min_size, max_size = resizable_page.change_resizable_size()
             assert default_size == {'height': 200, 'width': 200}, f"Size {default_size} different from expected default"
             assert min_size == {'height': 20, 'width': 20}, f"Size {min_size} different from expected min size"
             assert max_size == {'height': 520, 'width': 520}, f"Size {max_size} different from expected max size"
@@ -96,7 +96,7 @@ class TestInteractions:
             locators = DroppablePageLocators()
             data = {
                 "acceptable": {
-                    "locator":locators.ACCEPTABLE,
+                    "locator": locators.ACCEPTABLE,
                     "expected_text": "Dropped!"
                 },
                 "not_acceptable": {
@@ -104,6 +104,7 @@ class TestInteractions:
                     "expected_text": "Drop here"
                 }
             }
+
             @pytest.mark.parametrize("data", data.values(), ids=data.keys())
             def test_drag_accept(self, driver, data):
                 accept_page = DroppablePage(driver, 'https://demoqa.com/droppable')
@@ -166,7 +167,7 @@ class TestInteractions:
                 assert text_before == "Drop here", "Incorrect text before dragging"
                 assert location_before != location_after and location_after == \
                        "position: relative; left: 314px; top: -17px;"
-                #дополнительно проверяем что элемент можно вытянуть из дива
+                # дополнительно проверяем что элемент можно вытянуть из дива
                 assert location_leave != location_after, "Div didn't change location after dragging out of drop div"
 
     class TestDraggablePage:
@@ -174,8 +175,68 @@ class TestInteractions:
             def test_drag_element(self, driver):
                 simple_page = DraggablePage(driver, 'https://demoqa.com/dragabble')
                 simple_page.open()
-                location_before, location_after = simple_page.move_drag_element()
+                location_before, location_after = simple_page.drag_simple()
                 assert location_before == "position: relative; left: 50px; top: 50px;", "Unexpected location after " \
                                                                                         "dragging"
                 assert location_after == "position: relative; left: 100px; top: 100px;", "Unexpected location after " \
-                                                                                        "dragging"
+                                                                                         "dragging"
+
+        class TestAxis:
+            def test_drag_x(self, driver):
+                axis_page = DraggablePage(driver, 'https://demoqa.com/dragabble')
+                axis_page.open()
+                location_before, location_after = axis_page.drag_axis_x()
+                assert location_before == "position: relative; left: 50px; top: 0px;", "Unexpected location after " \
+                                                                                       "dragging"
+                assert location_after == "position: relative; left: 100px; top: 0px;", "Unexpected location after " \
+                                                                                       "dragging"
+
+            def test_drag_y(self, driver):
+                axis_page = DraggablePage(driver, 'https://demoqa.com/dragabble')
+                axis_page.open()
+                location_before, location_after = axis_page.drag_axis_y()
+                assert location_before == "position: relative; left: 0px; top: 50px;", "Unexpected location after " \
+                                                                                       "dragging"
+                assert location_after == "position: relative; left: 0px; top: 100px;", "Unexpected location after " \
+                                                                                       "dragging"
+
+        class TestContainerRestricted:
+            def test_div_inside_container(self, driver):
+                container_page = DraggablePage(driver, 'https://demoqa.com/dragabble')
+                container_page.open()
+                end_x, end_y, container_x, container_y, container_width, container_height = \
+                    container_page.drag_box_inside_container()
+                assert container_x <= end_x <= container_x + container_width, \
+                    "Element moved out from container border by axis x"
+                assert container_y <= end_y <= container_y + container_height, \
+                    "Element moved out from container border by axis y"
+
+            def test_div_inside_container_small_window(self, driver):
+                container_page = DraggablePage(driver, 'https://demoqa.com/dragabble')
+                container_page.open()
+                end_x, end_y, container_x, container_y, container_width, container_height = \
+                    container_page.drag_box_inside_container("small")
+                assert container_x <= end_x <= container_x + container_width, \
+                    "Element moved out from container border by axis x"
+                assert container_y <= end_y <= container_y + container_height, \
+                    "Element moved out from container border by axis y"
+
+            def test_span_inside_container(self, driver):
+                container_page = DraggablePage(driver, 'https://demoqa.com/dragabble')
+                container_page.open()
+                end_x, end_y, container_x, container_y, container_width, container_height = \
+                    container_page.drag_span_inside_container()
+                assert container_x <= end_x <= container_x + container_width, \
+                    "Element moved out from container border by axis x"
+                assert container_y <= end_y <= container_y + container_height, \
+                    "Element moved out from container border by axis y"
+
+            def test_span_inside_container_small_window(self, driver):
+                container_page = DraggablePage(driver, 'https://demoqa.com/dragabble')
+                container_page.open()
+                end_x, end_y, container_x, container_y, container_width, container_height = \
+                    container_page.drag_span_inside_container("small")
+                assert container_x <= end_x <= container_x + container_width, \
+                    "Element moved out from container border by axis x"
+                assert container_y <= end_y <= container_y + container_height, \
+                    "Element moved out from container border by axis y"

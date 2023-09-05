@@ -50,3 +50,17 @@ class DraggablePageLocators:
     # Simple
     SIMPLE_TAB = (By.CSS_SELECTOR, "#draggableExample-tab-simple")
     DRAG_ME = (By.CSS_SELECTOR, "#dragBox")
+
+    #Axis Restricted
+    AXIS_RESTRICTED_TAB = (By.CSS_SELECTOR, "#draggableExample-tab-axisRestriction")
+    X_ELEMENT = (By.CSS_SELECTOR, "#restrictedX")
+    Y_ELEMENT = (By.CSS_SELECTOR, "#restrictedY")
+
+    #Container Restricted
+    CONTAINER_RESTRICTED_TAB = (By.CSS_SELECTOR, "#draggableExample-tab-containerRestriction")
+    CONTAINER_BOX_DIV = (By.CSS_SELECTOR, "#containmentWrapper")
+    DRAG_BOX = (By.CSS_SELECTOR, ".draggable:nth-of-type(1)")
+    CONTAINER_SPAN_DIV = (By.CSS_SELECTOR, "div[class*= 'draggable ui-widget-content']:nth-of-type(2)")
+    DRAG_SPAN = (By.CSS_SELECTOR, ".draggable:nth-of-type(2)")
+
+

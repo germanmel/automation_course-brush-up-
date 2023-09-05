@@ -105,6 +105,10 @@ class BasePage:
         action.drag_and_drop(what_element, where_element)
         action.perform()
 
+    def change_window_size(self, width, height):
+        self.driver.set_window_size(width, height)
+
+
 
 
 
