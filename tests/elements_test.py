@@ -1,13 +1,15 @@
 import time
+
+import allure
 import pytest
 from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage, \
     FilePage, DynamicPropertiesPage
 from random import randint
 from locators.elements_page_locators import LinkPageLocators
 
-
+@allure.suite("Elements")
 class TestTextBox:
-
+    @allure.title("Check TextBox")
     def test_text_box(self, driver):
         text_box_page = TextBoxPage(driver, 'https://demoqa.com/text-box')
         text_box_page.open()
@@ -26,6 +28,7 @@ class TestTextBox:
         в плане обозначения точного места ошибки"""
 
 class TestCheckBox:
+    @allure.title("Check CheckBox")
     def test_checkbox(self, driver):
         check_box_page = CheckBoxPage(driver, 'https://demoqa.com/checkbox')
         check_box_page.open()
@@ -36,6 +39,7 @@ class TestCheckBox:
         assert input_checkbox == output_checkbox, f"Input: {input_checkbox} differs from output: {output_checkbox}"
 
 class TestRadioButton:
+    @allure.title("Check RadioButton")
     def test_radio_button(self, driver):
         radio_button_page = RadioButtonPage(driver, 'https://demoqa.com/radio-button')
         radio_button_page.open()
@@ -52,7 +56,7 @@ class TestRadioButton:
         assert output_no == "No", '"No" radio button haven\'t been selected'
 
 class TestWebTable:
-
+    @allure.title("Check WebTable add person")
     def test_web_table_add_person(self, driver):
         web_table_page = WebTablePage(driver, 'https://demoqa.com/webtables')
         web_table_page.open()
@@ -62,6 +66,7 @@ class TestWebTable:
         for person in new_person:
             assert person in table_data, f"User {person} doesn't exist in table data: {table_data}"
 
+    @allure.title("Check WebTable search person")
     def test_web_table_search_person(self, driver):
         web_table_page = WebTablePage(driver, 'https://demoqa.com/webtables')
         web_table_page.open()
@@ -72,6 +77,7 @@ class TestWebTable:
         table_result = web_table_page.check_search_person()
         assert key_word in table_result, f"Word {key_word} not contains in {table_result}"
 
+    @allure.title("Check WebTable update person information")
     def test_web_table_update_person_info(self, driver):
         web_table_page = WebTablePage(driver, 'https://demoqa.com/webtables')
         web_table_page.open()
@@ -82,6 +88,7 @@ class TestWebTable:
         row = web_table_page.check_search_person()
         assert str(age) in row, f"Age {age} doesn't exist in user data {row}"
 
+    @allure.title("Check WebTable delete person")
     def test_web_table_delete_person(self, driver):
         web_table_page = WebTablePage(driver, 'https://demoqa.com/webtables')
         web_table_page.open()
@@ -92,6 +99,7 @@ class TestWebTable:
         time.sleep(2)
         assert text == "No rows found", f"Text {text} differs from expexted 'No rows found"
 
+    @allure.title("Check WebTable change count")
     def test_web_table_change_count(self, driver):
         web_table_page = WebTablePage(driver, 'https://demoqa.com/webtables')
         web_table_page.open()

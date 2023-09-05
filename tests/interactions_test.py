@@ -1,3 +1,5 @@
+import allure
+
 from pages.interactions_page import SortablePage, SelectablePage, ResizablePage, DroppablePage, DraggablePage
 from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators, ResizablePageLocators, \
     DroppablePageLocators
@@ -199,8 +201,9 @@ class TestInteractions:
                                                                                        "dragging"
                 assert location_after == "position: relative; left: 0px; top: 100px;", "Unexpected location after " \
                                                                                        "dragging"
-
+        @allure.feature("Drag elements inside the containers")
         class TestContainerRestricted:
+            @allure.title("Drag div element inside the container")
             def test_div_inside_container(self, driver):
                 container_page = DraggablePage(driver, 'https://demoqa.com/dragabble')
                 container_page.open()

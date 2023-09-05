@@ -1,4 +1,7 @@
 import random, time
+
+import allure
+
 from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators, ResizablePageLocators, \
     DroppablePageLocators, DraggablePageLocators
 from pages.base_page import BasePage
@@ -187,24 +190,25 @@ class DraggablePage(BasePage):
 
 #TODO: Избавиться от дублирующего кода, напр. параметризацией
     def drag_box_inside_container(self, size=None):
-        self.element_is_visible(self.locators.CONTAINER_RESTRICTED_TAB).click()
-        container = self.element_is_present(self.locators.CONTAINER_BOX_DIV)
-        drag_element = self.element_is_visible(self.locators.DRAG_BOX)
-        # начальные координаты элемента
-        start_x = drag_element.location['x']
-        start_y = drag_element.location['y']
-        # перемещаем элемент
-        self.drag_and_drop_by_offset(drag_element, 700, 700)
-        if size == "small":
-            self.change_window_size(1024, 768)
-        # конечные координаты элемента
-        end_x = drag_element.location['x']
-        end_y = drag_element.location['y']
-        # координаты и размер контейнера
-        container_x = container.location['x']
-        container_y = container.location['y']
-        container_width = container.size['width']
-        container_height = container.size['height']
+        with allure.step("Open page and find elements"):
+            self.element_is_visible(self.locators.CONTAINER_RESTRICTED_TAB).click()
+            container = self.element_is_present(self.locators.CONTAINER_BOX_DIV)
+            drag_element = self.element_is_visible(self.locators.DRAG_BOX)
+        with allure.step("Find out start element location"):
+            start_x = drag_element.location['x']
+            start_y = drag_element.location['y']
+        with allure.step("Move element"):
+            self.drag_and_drop_by_offset(drag_element, 700, 700)
+            if size == "small":
+                self.change_window_size(1024, 768)
+        with allure.step("Find end location of drag element"):
+            end_x = drag_element.location['x']
+            end_y = drag_element.location['y']
+        with allure.step("Find location and size of container"):
+            container_x = container.location['x']
+            container_y = container.location['y']
+            container_width = container.size['width']
+            container_height = container.size['height']
 
         return end_x, end_y, container_x, container_y, container_width, container_height
 
