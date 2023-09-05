@@ -12,7 +12,7 @@ def driver():
     расширением"""
     options.add_argument("user-data-dir=C:\\profile")
     """Иницилизируем драйвер с помощью менеджера"""
-    driver = webdriver.Chrome(ChromeDriverManager(version="114.0.5735.16").install(), chrome_options=options)
+    driver = webdriver.Chrome(options=options)
     driver.maximize_window() #Открываем на весь экран
     yield driver
     driver.quit()
