@@ -29,6 +29,7 @@ class TestTextBox:
 
 class TestCheckBox:
     @allure.title("Check CheckBox")
+    @pytest.mark.test
     def test_checkbox(self, driver):
         check_box_page = CheckBoxPage(driver, 'https://demoqa.com/checkbox')
         check_box_page.open()

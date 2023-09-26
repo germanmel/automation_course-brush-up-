@@ -5,18 +5,32 @@ import allure
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
+def pytest_addoption(parser):
+    parser.addoption('--browser_name', action='store', default="chrome",  # настраиваем определение параметров командной строки которые можем вводить
+                    help="Choose browser: chrome or firefox")
 
 @pytest.fixture(scope='function')
-def driver():
-    options = Options()
-    """Сохраняем профиль пользователя и работаем на нём, при первом запуске с профилем можно добавить таймслип и 
-    установить необходимые расширения, например adblock, при следующих запусках будет использоваться этот профиль с 
-    расширением"""
-    options.add_argument("user-data-dir=C:\\profile")
-    """Иницилизируем драйвер с помощью менеджера"""
-    driver = webdriver.Chrome(options=options)
-    driver.maximize_window() #Открываем на весь экран
+def driver(request):
+    browser_name = request.config.getoption(
+        "browser_name")  # с помощью встроенной фикстуры request передаём браузеру параметры
+    if browser_name == "chrome":
+        options = Options()
+        """Сохраняем профиль пользователя и работаем на нём, при первом запуске с профилем можно добавить таймслип и 
+        установить необходимые расширения, например adblock, при следующих запусках будет использоваться этот профиль с 
+        расширением"""
+        options.add_argument("user-data-dir=C:\\profile")
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])  # данная строка отключает логирование в консоли, убирает текст DevTools listening on ws://127.0.0.1 и прочий мусор
+        driver = webdriver.Chrome(options=options)
+        driver.maximize_window()  # Открываем на весь экран
+        print("\nstart chrome browser for test..")
+    elif browser_name == "firefox":
+        firefox_options = webdriver.FirefoxOptions()
+        driver = webdriver.Firefox()
+        print("\nstart firefox browser for test..")
+    else:
+        print("--browser_name should be chrome or firefox")
     yield driver
+    print("\nquit browser..")
     driver.quit()
 
 #Фикстура сохранения скриншота в случае падения теста
