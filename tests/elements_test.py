@@ -28,8 +28,8 @@ class TestTextBox:
         в плане обозначения точного места ошибки"""
 
 class TestCheckBox:
-    @allure.title("Check CheckBox")
     @pytest.mark.test
+    @allure.title("Check CheckBox")
     def test_checkbox(self, driver):
         check_box_page = CheckBoxPage(driver, 'https://demoqa.com/checkbox')
         check_box_page.open()
@@ -38,6 +38,7 @@ class TestCheckBox:
         input_checkbox = check_box_page.get_checked_checkboxes()
         output_checkbox = check_box_page.get_output_results()
         assert input_checkbox == output_checkbox, f"Input: {input_checkbox} differs from output: {output_checkbox}"
+#TODO Сделать отдельную проверку на некликабельный радио 'no'
 
 class TestRadioButton:
     @allure.title("Check RadioButton")
@@ -54,7 +55,7 @@ class TestRadioButton:
         output_no = radio_button_page.get_checked_radio_titles()
         assert output_yes == "Yes", '"Yes" radio button haven\'t been selected'
         assert output_impressive == 'Impressive', '"Impressive" radio button haven\'t been selected'
-        assert output_no == "No", '"No" radio button haven\'t been selected'
+        #assert output_no == "No", '"No" radio button haven\'t been selected'
 
 class TestWebTable:
     @allure.title("Check WebTable add person")

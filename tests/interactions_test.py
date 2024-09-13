@@ -68,7 +68,6 @@ class TestInteractions:
             assert items == selected, f"Clicked items: {items} and selected items {selected} are different"
 
     class TestResizablePage:
-
         def test_resizable_box(self, driver):
             resizable_page = ResizablePage(driver, 'https://demoqa.com/resizable')
             resizable_page.open()

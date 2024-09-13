@@ -131,6 +131,8 @@ class WebTablePage(BasePage):
             """Возвращаем в виде списка элементов(по умолчанию tuple), меняем тип данных для соответствия проверке,
             добавляем в список new_person список каждого юзера, если их несколько"""
             new_persons.append([firstname, lastname, str(age), email, str(salary), department])
+
+            print("Generated Person:", person_info)
         return new_persons
 
     def check_new_person(self):
